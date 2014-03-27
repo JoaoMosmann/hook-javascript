@@ -47,15 +47,15 @@ DL.Auth.prototype.setCurrentUser = function(data) {
 };
 
 /**
- * Register user using current authentication provider.
+ * Register user using an authentication provider.
  *
  * @param {String} provider
  * @param {Object} data
- * @method authenticate
+ * @method register
  *
  * @example Authenticating with email address
  *
- *     client.auth.authenticate('email', {
+ *     client.auth.register('email', {
  *       email: "daliberti@doubleleft.com",
  *       name: "Danilo Aliberti",
  *       password: "123"
@@ -66,14 +66,14 @@ DL.Auth.prototype.setCurrentUser = function(data) {
  * @example Authenticating with Facebook
  *
  *     FB.login(function(response) {
- *       client.auth.authenticate('facebook', response.authResponse).then(function(user) {
+ *       client.auth.register('facebook', response.authResponse).then(function(user) {
  *         console.log("Registered user: ", user);
  *       });
  *     }, {scope: 'email'});
  *
  *
  */
-DL.Auth.prototype.authenticate = function(provider, data) {
+DL.Auth.prototype.register = function(provider, data) {
   var promise, that = this;
   if (typeof(data)==="undefined") { data = {}; }
   promise = this.client.post('auth/' + provider, data);
@@ -81,6 +81,16 @@ DL.Auth.prototype.authenticate = function(provider, data) {
     that.registerToken(data);
   });
   return promise;
+};
+
+/**
+ * Alias to 'register' method.
+ * @method authenticate
+ * @see register
+ */
+DL.Auth.prototype.authenticate = function(provider, data) {
+  console.log("WARNING: DL.Auth.authenticate will be deprecated. Please use DL.Auth.register instead.");
+  return this.register(provider, data);
 };
 
 /**

@@ -3,7 +3,7 @@
  * https://github.com/doubleleft/dl-api-javascript
  *
  * @copyright 2014 Doubleleft
- * @build 3/19/2014
+ * @build 3/27/2014
  */
 (function(define) { 'use strict';
 define(function (require) {
@@ -410,15 +410,15 @@ DL.Auth.prototype.setCurrentUser = function(data) {
 };
 
 /**
- * Register user using current authentication provider.
+ * Register user using an authentication provider.
  *
  * @param {String} provider
  * @param {Object} data
- * @method authenticate
+ * @method register
  *
  * @example Authenticating with email address
  *
- *     client.auth.authenticate('email', {
+ *     client.auth.register('email', {
  *       email: "daliberti@doubleleft.com",
  *       name: "Danilo Aliberti",
  *       password: "123"
@@ -429,14 +429,14 @@ DL.Auth.prototype.setCurrentUser = function(data) {
  * @example Authenticating with Facebook
  *
  *     FB.login(function(response) {
- *       client.auth.authenticate('facebook', response.authResponse).then(function(user) {
+ *       client.auth.register('facebook', response.authResponse).then(function(user) {
  *         console.log("Registered user: ", user);
  *       });
  *     }, {scope: 'email'});
  *
  *
  */
-DL.Auth.prototype.authenticate = function(provider, data) {
+DL.Auth.prototype.register = function(provider, data) {
   var promise, that = this;
   if (typeof(data)==="undefined") { data = {}; }
   promise = this.client.post('auth/' + provider, data);
@@ -444,6 +444,16 @@ DL.Auth.prototype.authenticate = function(provider, data) {
     that.registerToken(data);
   });
   return promise;
+};
+
+/**
+ * Alias to 'register' method.
+ * @method authenticate
+ * @see register
+ */
+DL.Auth.prototype.authenticate = function(provider, data) {
+  console.log("WARNING: DL.Auth.authenticate will be deprecated. Please use DL.Auth.register instead.");
+  return this.register(provider, data);
 };
 
 /**
@@ -1160,28 +1170,13 @@ DL.Collection.prototype.channel = function(options) {
 };
 
 /**
+ * Paginate through query
  * @method paginate
- * @return {DL.Pagination}
- *
- * @param {Mixed} perpage_or_callback
- * @param {Function} onComplete
- * @param {Function} onError (optional)
+ * @param {Number} perPage [optional]
+ * @return {Pagination}
  */
-DL.Collection.prototype.paginate = function(perPage, onComplete, onError) {
-  var pagination = new DL.Pagination(this);
-
-  if (!onComplete) {
-    onComplete = perPage;
-    perPage = DL.defaults.perPage;
-  }
-
-  this.options.paginate = perPage;
-  this.then(function(data) {
-    pagination._fetchComplete(data);
-    if (onComplete) { onComplete(pagination); }
-  }, onError);
-
-  return pagination;
+DL.Collection.prototype.paginate = function(perPage) {
+  return new DL.Pagination(this, this.buildQuery(), perPage);
 };
 
 /**
@@ -1372,22 +1367,22 @@ DL.CollectionItem = function(collection, _id) {
 /**
  * @class DL.Events
  */
-DL.Events = function(client) {
-  this.client = client;
-  this.events = {};
+DL.Events = function() {
+  this._events = {};
 };
 
 DL.Events.prototype.on = function(event, callback, context) {
-  if (!this.events[event]) { this.events[event] = []; }
-  this.events[event].push({callback: callback, context: context});
+  if (!this._events[event]) { this._events[event] = []; }
+  this._events[event].push({callback: callback, context: context || this});
+  return this;
 };
 
-DL.Events.prototype.trigger = function(event, data) {
-  var c, args = arguments.slice(1);
-  if (this.events[event]) {
-    for (var i=0,length=this.events[event].length;i<length;i++)  {
-      c = this.events[event][i];
-      c.callback.apply(c.context || this.client, args);
+DL.Events.prototype.trigger = function(event) {
+  var c, args = Array.prototype.slice.call(arguments,1);
+  if (this._events[event]) {
+    for (var i=0,length=this._events[event].length;i<length;i++)  {
+      c = this._events[event][i];
+      c.callback.apply(c.context, args);
     }
   }
 };
@@ -1492,19 +1487,98 @@ DL.KeyValues.prototype.set = function(key, value) {
 /**
  * @module DL
  * @class DL.Pagination
+ * @extends DL.Events
  *
  * @param {DL.Collection} collection
  * @param {Number} perPage
  * @constructor
  */
-DL.Pagination = function(collection) {
+DL.Pagination = function(collection, query, perPage) {
   this.fetching = true;
+  this.query = query;
+  this.query.p = (perPage || DL.defaults.perPage);
 
   /**
    * @property collection
    * @type {DL.Collection}
    */
   this.collection = collection;
+
+  this.query.page = 1;
+  this._fetch();
+};
+
+// Inherits from DL.Iterable
+DL.Pagination.prototype = new DL.Events();
+DL.Pagination.prototype.constructor = DL.Pagination;
+
+/**
+ * Register onchange pages callback.
+ * @method change
+ * @param {Function} callback
+ * @return {Promise}
+ */
+DL.Pagination.prototype.change = function(callback) {
+  return this.on('change', callback);
+};
+
+/**
+ * @method hasNext
+ * @return {Boolean}
+ */
+DL.Pagination.prototype.hasNext = function() {
+  return (this.current_page < this.last_page);
+};
+
+/**
+ * @method previous
+ * @return {Pagination}
+ */
+DL.Pagination.prototype.previous = function() {
+  if (this.current_page > 0) {
+    this.query.page = this.current_page - 1;
+    this._fetch();
+  }
+  return this;
+};
+
+/**
+ * @method next
+ * @return {Pagination}
+ */
+DL.Pagination.prototype.next = function(callback) {
+  if (this.hasNext()) {
+    this.query.page = this.current_page + 1;
+    this._fetch();
+  }
+  return this;
+};
+
+/**
+ * @method goto
+ * @param {Number} page
+ * @return {Pagination}
+ */
+DL.Pagination.prototype.goto = function(page) {
+  this.query.page = page;
+  this._fetch();
+  return this;
+};
+
+/**
+ * @method isFetching
+ * @return {Booelan}
+ */
+DL.Pagination.prototype.isFetching = function() {
+  return this.fetching;
+};
+
+DL.Pagination.prototype._fetch = function() {
+  var that = this;
+  return this.collection.client.get(this.collection.segments, this.query).then(function() {
+    that._fetchComplete.apply(that, arguments);
+    that.trigger('change', that);
+  });
 };
 
 DL.Pagination.prototype._fetchComplete = function(response) {
@@ -1551,25 +1625,6 @@ DL.Pagination.prototype._fetchComplete = function(response) {
    * @type {Object}
    */
   this.items = response.data;
-};
-
-/**
- * @method hasNext
- * @return {Boolean}
- */
-DL.Pagination.prototype.hasNext = function() {
-  return (this.current_page < this.to);
-};
-
-/**
- * @method isFetching
- * @return {Booelan}
- */
-DL.Pagination.prototype.isFetching = function() {
-  return this.fetching;
-};
-
-DL.Pagination.prototype.then = function() {
 };
 
 /**

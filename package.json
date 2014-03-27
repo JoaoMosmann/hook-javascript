@@ -1,8 +1,8 @@
 {
-	"name": "dl-api-js",
+	"name": "dl-api-javascript",
 	"title": "JavaScript Client for dl-api",
 	"description": "JavaScript client to Doubleleft API",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"homepage": "http://github.com/doubleleft/dl-api",
 	"authors": [{
 		"name": "Endel Dreyer",

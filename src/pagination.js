@@ -9,23 +9,90 @@
  */
 DL.Pagination = function(collection, query, perPage) {
   this.fetching = true;
-  this.perPage = (perPage || DL.defaults.perPage);
+  this.query = query;
+  this.query.p = (perPage || DL.defaults.perPage);
 
   /**
    * @property collection
    * @type {DL.Collection}
    */
   this.collection = collection;
-  this.query = query;
+
+  this.query.page = 1;
+  this._fetch();
 };
 
 // Inherits from DL.Iterable
 DL.Pagination.prototype = new DL.Events();
 DL.Pagination.prototype.constructor = DL.Pagination;
 
-DL.Pagination.prototype._fetch = function(page) {
-  this.query.p = page;
-  return this.collection.client.get(this.collection.segments, this.query).then(this._fetchComplete);
+/**
+ * Register onchange pages callback.
+ * @method change
+ * @param {Function} callback
+ * @return {Promise}
+ */
+DL.Pagination.prototype.change = function(callback) {
+  return this.on('change', callback);
+};
+
+/**
+ * @method hasNext
+ * @return {Boolean}
+ */
+DL.Pagination.prototype.hasNext = function() {
+  return (this.current_page < this.last_page);
+};
+
+/**
+ * @method previous
+ * @return {Pagination}
+ */
+DL.Pagination.prototype.previous = function() {
+  if (this.current_page > 0) {
+    this.query.page = this.current_page - 1;
+    this._fetch();
+  }
+  return this;
+};
+
+/**
+ * @method next
+ * @return {Pagination}
+ */
+DL.Pagination.prototype.next = function(callback) {
+  if (this.hasNext()) {
+    this.query.page = this.current_page + 1;
+    this._fetch();
+  }
+  return this;
+};
+
+/**
+ * @method goto
+ * @param {Number} page
+ * @return {Pagination}
+ */
+DL.Pagination.prototype.goto = function(page) {
+  this.query.page = page;
+  this._fetch();
+  return this;
+};
+
+/**
+ * @method isFetching
+ * @return {Booelan}
+ */
+DL.Pagination.prototype.isFetching = function() {
+  return this.fetching;
+};
+
+DL.Pagination.prototype._fetch = function() {
+  var that = this;
+  return this.collection.client.get(this.collection.segments, this.query).then(function() {
+    that._fetchComplete.apply(that, arguments);
+    that.trigger('change', that);
+  });
 };
 
 DL.Pagination.prototype._fetchComplete = function(response) {
@@ -72,50 +139,4 @@ DL.Pagination.prototype._fetchComplete = function(response) {
    * @type {Object}
    */
   this.items = response.data;
-};
-
-/**
- * @method hasNext
- * @return {Boolean}
- */
-DL.Pagination.prototype.hasNext = function() {
-  return (this.current_page < this.to);
-};
-
-/**
- * @method previous
- * @return {Pagination}
- */
-DL.Pagination.prototype.previous = function() {
-  if (this.current_page > 0) {
-    this.current_page -= 1;
-    this._fetch(this.current_page);
-  }
-  return (this.current_page < this.to);
-};
-
-/**
- * @method next
- * @return {Pagination}
- */
-DL.Pagination.prototype.next = function(callback) {
-  if (this.hasNext()) {
-  }
-  return (this.current_page < this.to);
-};
-
-/**
- * @method goto
- * @param {Number} page
- * @return {Pagination}
- */
-DL.Pagination.prototype.goto = function(callback) {
-};
-
-/**
- * @method isFetching
- * @return {Booelan}
- */
-DL.Pagination.prototype.isFetching = function() {
-  return this.fetching;
 };
