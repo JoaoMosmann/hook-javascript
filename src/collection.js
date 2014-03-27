@@ -393,28 +393,13 @@ DL.Collection.prototype.channel = function(options) {
 };
 
 /**
+ * Paginate through query
  * @method paginate
- * @return {DL.Pagination}
- *
- * @param {Mixed} perpage_or_callback
- * @param {Function} onComplete
- * @param {Function} onError (optional)
+ * @param {Number} perPage [optional]
+ * @return {Pagination}
  */
-DL.Collection.prototype.paginate = function(perPage, onComplete, onError) {
-  var pagination = new DL.Pagination(this);
-
-  if (!onComplete) {
-    onComplete = perPage;
-    perPage = DL.defaults.perPage;
-  }
-
-  this.options.paginate = perPage;
-  this.then(function(data) {
-    pagination._fetchComplete(data);
-    if (onComplete) { onComplete(pagination); }
-  }, onError);
-
-  return pagination;
+DL.Collection.prototype.paginate = function(perPage) {
+  return new DL.Pagination(this, this.buildQuery(), perPage);
 };
 
 /**
