@@ -3,7 +3,7 @@
  * https://github.com/doubleleft/dl-api-javascript
  *
  * @copyright 2014 Doubleleft
- * @build 4/7/2014
+ * @build 4/8/2014
  */
 (function(define) { 'use strict';
 define(function (require) {
@@ -44,9 +44,6 @@ window.DL = DL;
  *
  * @constructor
  */
-if(typeof(window.FormData)==="undefined"){
-    window.FormData = function(){};
-}
 DL.Client = function(options) {
   this.url = options.url || "http://dl-api.dev/api/public/index.php/";
   this.appId = options.appId;
@@ -163,7 +160,6 @@ DL.Client.prototype.request = function(segments, method, data) {
     delete data._sync;
     synchronous = true;
   }
-
   // Compute payload
   payload = this.getPayload(method, data);
 
@@ -173,36 +169,63 @@ DL.Client.prototype.request = function(segments, method, data) {
     request_headers["Content-Type"] = 'application/json'; // exchange data via JSON to keep basic data types
   }
 
-  uxhr(this.url + segments, payload, {
-    method: method,
-    headers: request_headers,
-    sync: synchronous,
-    success: function(response) {
-      var data = null;
-      try{
-        data = JSON.parse(response);
-      } catch(e) {
-        //something wrong with JSON. IE throws exception on JSON.parse
-      }
+    var url = this.url + segments;
+    var data = payload;
+    var sync = synchronous;
+    var headers = request_headers;
 
-      if (!data || data.error) {
-        deferred.resolver.reject(data);
-      } else {
-        deferred.resolver.resolve(data);
-      }
-    },
-    error: function(response) {
-      var data = null;
-      try{
-        data = JSON.parse(response);
-      }catch(e){
-      }
-      console.log("Error: ", data || "invalid json response");
-      deferred.resolver.reject(data);
+    if (typeof data !== 'string'){
+        var serialized = [];
+        var skip = false;
+        for (var datum in data) {
+            if(typeof(data[datum]) == "function"){
+                skip = true;
+                break;
+            }
+            serialized.push(datum + '=' + data[datum]);
+        }
+        if(!skip){
+            data = serialized.join('&');
+        }
     }
-  });
 
-  return deferred.promise;
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function(){
+        if(this.readyState != 4){
+            return;
+        }
+        if(this.status == 200){
+            var response = this.responseText;
+            var data = null;
+            try{
+                data = JSON.parse(response);
+            } catch(e) {
+                //something wrong with JSON. IE throws exception on JSON.parse
+            }
+
+            if (!data || data.error) {
+                deferred.resolver.reject(data);
+            } else {
+                deferred.resolver.resolve(data);
+            }
+        }else{
+            var data = null;
+            try{
+                data = JSON.parse(this.responseText);
+            }catch(e){
+            }
+            deferred.resolver.reject(data);
+        }
+    };
+    request.open(method, (method === 'GET' && data ? url+'?'+data : url), !sync);
+    if(headers != null){
+        for (var header in headers) {
+        request.setRequestHeader(header, headers[header]);
+    }
+    request.send(method !== 'GET' ? data : null);
+    }
+
+    return deferred.promise;
 };
 
 /**
@@ -214,7 +237,7 @@ DL.Client.prototype.getHeaders = function() {
   // App authentication request headers
   var request_headers = {
     'X-App-Id': this.appId,
-    'X-App-Key': this.key,
+    'X-App-Key': this.key
   }, auth_token;
 
   // Forward user authentication token, if it is set
@@ -235,7 +258,6 @@ DL.Client.prototype.getHeaders = function() {
 DL.Client.prototype.getPayload = function(method, data) {
   var payload = null;
   if (data) {
-
     if (data instanceof FormData){
       payload = data;
     } else if (method !== "GET") {
@@ -246,20 +268,21 @@ DL.Client.prototype.getPayload = function(method, data) {
       for (field in data) {
         value = data[field];
         filename = null;
-
-        if (value instanceof HTMLInputElement) {
-          filename = value.files[0].name;
-          value = value.files[0];
-          worth = true;
-        } else if (value instanceof HTMLCanvasElement) {
-          value = dataURLtoBlob(value.toDataURL());
-          worth = true;
-          filename = 'canvas.png';
-        } else if (value instanceof Blob) {
-          worth = true;
-          filename = 'blob.' + value.type.match(/\/(.*)/)[1]; // get extension from blob mime/type
+        
+        if(value === undefined){
+            continue;
         }
-
+        if (value.files != null) {
+            filename = value.files[0].name;
+            value = value.files[0];
+            worth = true;
+        } else if (value.getContext != null) {
+            value = window.Blob ? dataURLtoBlob(value.toDataURL()) : "dl-api-"+(value.toDataURL());
+            worth = true;
+        } else if (window.Blob && (value instanceof Blob)) {
+            worth = true;
+            filename = 'blob.' + value.type.match(/\/(.*)/)[1]; // get extension from blob mime/type
+        }
         //
         // Consider serialization to keep data types here: http://phpjs.org/functions/serialize/
         //

@@ -3,7 +3,7 @@
  * https://github.com/doubleleft/dl-api-javascript
  *
  * @copyright 2014 Doubleleft
- * @build 4/7/2014
+ * @build 4/8/2014
  */
 (function(window) {
   //
@@ -960,149 +960,6 @@ define(function (require) {
 	return when;
 });
 })(typeof define === 'function' && define.amd ? define : function (factory) { module.exports = factory(require); });
-
-(function (root, factory) {
-	if (typeof exports === 'object') {
-		module.exports = factory();
-	} else if (typeof define === 'function' && define.amd) {
-		define('uxhr', factory);
-	} else {
-		root.uxhr = factory();
-	}
-}(this, function () {
-
-	"use strict";
-
-	return function (url, data, options) {
-		data = data || '';
-		options = options || {};
-
-		var complete = options.complete || function(){},
-			success = options.success || function(){},
-			error = options.error || function(){},
-			headers = options.headers,
-			method = options.method || 'GET',
-			sync = options.sync || false,
-			req = (function() {
-				if (typeof 'XMLHttpRequest' !== 'undefined') {
-					return new XMLHttpRequest();
-
-				} else if (typeof 'ActiveXObject' !== 'undefined') {
-					return new ActiveXObject('Microsoft.XMLHTTP');
-				}
-
-			})();
-
-		if (!req) {
-			throw new Error ('Browser doesn\'t support XHR');
-		}
-
-		// serialize data?
-		if (typeof data !== 'string'){
-			var serialized = [];
-			var skip = false;
-			for (var datum in data) {
-				if(typeof(data[datum]) == "function"){
-					skip = true;
-					break;
-				}
-				serialized.push(datum + '=' + data[datum]);
-			}
-			if(!skip){
-				data = serialized.join('&');
-			}
-		}
-
-		// set timeout
-		if ('ontimeout' in req) {
-			req.ontimeout = +options.timeout || 0;
-		}
-
-		// listen for XHR events
-		req.onload = function () {
-			complete(this.responseText, this.status);
-			success(this.responseText);
-		};
-		req.onerror = function () {
-			complete(this.responseText);
-			error(this.responseText, this.status);
-		};
-
-		try{
-			req.open(method, (method === 'GET' && data ? url+'?'+data : url), !sync);
-			if(headers != null){
-				for (var header in headers) {
-					req.setRequestHeader(header, headers[header]);
-				}
-			}
-			req.send(method !== 'GET' ? data : null);
-
-		}catch(e){
-			if (typeof XDomainRequest !== 'undefined') {
-				if(sync || headers != null){
-					//XDomainRequest does not suport custom headers
-					//or synchronous method with CORS
-					var a = document.createElement("a"); a.href = url;
-					var iframe = document.createElement("iframe");	
-					document.body.appendChild(iframe);
-					iframe.id = "uxhr-crossdomain";
-					iframe.src = a.protocol + "//" + a.hostname  + "/crossdomain.html";
-					iframe.style.display = "none";
-					var w = iframe.contentWindow;
-					window.addEventListener("message", function(e){
-						var d = e.data.split("|");
-						var key = d[0], val = d[1], json = d[2] == null ? {} : JSON.parse(d[2]);
-						if(key == "uxhr"){
-							if(val == "ready"){
-								var r = {url:url, data:data, options:options};
-								w.postMessage("uxhr|"+JSON.stringify(r), iframe.src);
-							}else if(val == "error"){
-								complete(json.data);
-								error(json.data);
-							}else if(val == "complete"){
-								complete(json.data);
-								success(json.data);
-							}
-						}
-					}, false);
-				}else{
-					var xdr = new XDomainRequest();
-					xdr.onload = req.onload;
-					xdr.onerror = req.onerror;
-					xdr.open(method, method === 'GET' && data ? url+'?'+data : url);
-					xdr.send(method !== 'GET' ? data : null);
-					req = xdr;
-				}
-			}
-		}
-
-		// send it	
-		return req;
-	};
-}));
-
-window.uxhr_crossdomain = function(){
-	var url = (window.location != window.parent.location) ? document.referrer: document.location;
-	var w = parent;
-	var onMessage = function(e){
-		var d = e.data.split("|");
-		var key = d[0], val = d[1];
-		if(key == "uxhr"){
-			var r = JSON.parse(val);	
-			var options = r.options;
-			options.complete = function(response){
-				w.postMessage("uxhr|complete|"+JSON.stringify({data:response}), url);
-			};
-			options.error = function(response){
-				w.postMessage("uxhr|error|"+JSON.stringify({data:response}), url);
-			};
-			uxhr(r.url, r.data, options);
-		}
-		window.removeEventListener("message", onMessage);
-	};
-	w.postMessage("uxhr|ready", url);
-	window.addEventListener('message', onMessage, false);
-};
 
 /**
  * @license
@@ -8397,9 +8254,6 @@ window.DL = DL;
  *
  * @constructor
  */
-if(typeof(window.FormData)==="undefined"){
-    window.FormData = function(){};
-}
 DL.Client = function(options) {
   this.url = options.url || "http://dl-api.dev/api/public/index.php/";
   this.appId = options.appId;
@@ -8516,7 +8370,6 @@ DL.Client.prototype.request = function(segments, method, data) {
     delete data._sync;
     synchronous = true;
   }
-
   // Compute payload
   payload = this.getPayload(method, data);
 
@@ -8526,36 +8379,63 @@ DL.Client.prototype.request = function(segments, method, data) {
     request_headers["Content-Type"] = 'application/json'; // exchange data via JSON to keep basic data types
   }
 
-  uxhr(this.url + segments, payload, {
-    method: method,
-    headers: request_headers,
-    sync: synchronous,
-    success: function(response) {
-      var data = null;
-      try{
-        data = JSON.parse(response);
-      } catch(e) {
-        //something wrong with JSON. IE throws exception on JSON.parse
-      }
+    var url = this.url + segments;
+    var data = payload;
+    var sync = synchronous;
+    var headers = request_headers;
 
-      if (!data || data.error) {
-        deferred.resolver.reject(data);
-      } else {
-        deferred.resolver.resolve(data);
-      }
-    },
-    error: function(response) {
-      var data = null;
-      try{
-        data = JSON.parse(response);
-      }catch(e){
-      }
-      console.log("Error: ", data || "invalid json response");
-      deferred.resolver.reject(data);
+    if (typeof data !== 'string'){
+        var serialized = [];
+        var skip = false;
+        for (var datum in data) {
+            if(typeof(data[datum]) == "function"){
+                skip = true;
+                break;
+            }
+            serialized.push(datum + '=' + data[datum]);
+        }
+        if(!skip){
+            data = serialized.join('&');
+        }
     }
-  });
 
-  return deferred.promise;
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function(){
+        if(this.readyState != 4){
+            return;
+        }
+        if(this.status == 200){
+            var response = this.responseText;
+            var data = null;
+            try{
+                data = JSON.parse(response);
+            } catch(e) {
+                //something wrong with JSON. IE throws exception on JSON.parse
+            }
+
+            if (!data || data.error) {
+                deferred.resolver.reject(data);
+            } else {
+                deferred.resolver.resolve(data);
+            }
+        }else{
+            var data = null;
+            try{
+                data = JSON.parse(this.responseText);
+            }catch(e){
+            }
+            deferred.resolver.reject(data);
+        }
+    };
+    request.open(method, (method === 'GET' && data ? url+'?'+data : url), !sync);
+    if(headers != null){
+        for (var header in headers) {
+        request.setRequestHeader(header, headers[header]);
+    }
+    request.send(method !== 'GET' ? data : null);
+    }
+
+    return deferred.promise;
 };
 
 /**
@@ -8567,7 +8447,7 @@ DL.Client.prototype.getHeaders = function() {
   // App authentication request headers
   var request_headers = {
     'X-App-Id': this.appId,
-    'X-App-Key': this.key,
+    'X-App-Key': this.key
   }, auth_token;
 
   // Forward user authentication token, if it is set
@@ -8588,7 +8468,6 @@ DL.Client.prototype.getHeaders = function() {
 DL.Client.prototype.getPayload = function(method, data) {
   var payload = null;
   if (data) {
-
     if (data instanceof FormData){
       payload = data;
     } else if (method !== "GET") {
@@ -8599,20 +8478,21 @@ DL.Client.prototype.getPayload = function(method, data) {
       for (field in data) {
         value = data[field];
         filename = null;
-
-        if (value instanceof HTMLInputElement) {
-          filename = value.files[0].name;
-          value = value.files[0];
-          worth = true;
-        } else if (value instanceof HTMLCanvasElement) {
-          value = dataURLtoBlob(value.toDataURL());
-          worth = true;
-          filename = 'canvas.png';
-        } else if (value instanceof Blob) {
-          worth = true;
-          filename = 'blob.' + value.type.match(/\/(.*)/)[1]; // get extension from blob mime/type
+        
+        if(value === undefined){
+            continue;
         }
-
+        if (value.files != null) {
+            filename = value.files[0].name;
+            value = value.files[0];
+            worth = true;
+        } else if (value.getContext != null) {
+            value = window.Blob ? dataURLtoBlob(value.toDataURL()) : "dl-api-"+(value.toDataURL());
+            worth = true;
+        } else if (window.Blob && (value instanceof Blob)) {
+            worth = true;
+            filename = 'blob.' + value.type.match(/\/(.*)/)[1]; // get extension from blob mime/type
+        }
         //
         // Consider serialization to keep data types here: http://phpjs.org/functions/serialize/
         //
