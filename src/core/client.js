@@ -129,21 +129,22 @@ DL.Client.prototype.remove = function(segments, data) {
  * @param {Object} data
  */
 DL.Client.prototype.request = function(segments, method, data) {
-  var payload, request_headers, deferred = when.defer(),
-      synchronous = false;
+    var payload, request_headers, deferred = when.defer(),
+        synchronous = false;
 
-  // FIXME: find a better way to write this
-  if (data && data._sync) {
-    delete data._sync;
-    synchronous = true;
-  }
-  // Compute payload
-  payload = this.getPayload(method, data);
-  // Compute request headers
-  request_headers = this.getHeaders();
-  if(!(window.FormData && payload instanceof FormData)){
-    request_headers["Content-Type"] = 'application/json'; // exchange data via JSON to keep basic data types
-  }
+    // FIXME: find a better way to write this
+    if (data && data._sync) {
+        delete data._sync;
+        synchronous = true;
+    }
+    // Compute payload
+    payload = this.getPayload(method, data);
+
+    // Compute request headers
+    request_headers = this.getHeaders();
+    if(!(window.FormData && payload instanceof FormData)){
+        request_headers["Content-Type"] = 'application/json'; // exchange data via JSON to keep basic data types
+    }
 
     var url = this.url + segments;
     var data = payload;
@@ -193,10 +194,11 @@ DL.Client.prototype.request = function(segments, method, data) {
             deferred.resolver.reject(data);
         }
     };
+
     request.open(method, (method === 'GET' && data ? url+'?'+data : url), !sync);
     if(headers != null){
         for (var header in headers) {
-           request.setRequestHeader(header, headers[header]);
+            request.setRequestHeader(header, headers[header]);
         }
     }
     request.send(method !== 'GET' ? data : null);
@@ -236,36 +238,39 @@ DL.Client.prototype.getPayload = function(method, data) {
     if (window.FormData && (data instanceof FormData)){
       payload = data;
 
-    } else if (method !== "GET" && window.FormData) {
+    }else if (method !== "GET") {
       var field, value, filename,
-          formdata = new FormData(),
+          formdata = window.FormData ? new FormData() : null,
           worth = false;
 
       for (field in data) {
         value = data[field];
         filename = null;
         
-        if(value === undefined){
-            continue;
+        if(typeof(value) === "function" || typeof(value) === "object"){
+            if((value instanceof HTMLInputElement)){
+                filename = value.files[0].name;
+                value = value.files[0];
+                worth = true;
+
+            }else if((window.HTMLCanvasElement && value instanceof HTMLCanvasElement) || value.getContext != null){
+                value = window.Blob ? dataURLtoBlob(value.toDataURL()) : "dl-api-"+(value.toDataURL());
+                worth = true;
+
+            }else if (window.Blob && (value instanceof Blob)){
+                worth = true;
+                filename = 'blob.' + value.type.match(/\/(.*)/)[1]; // get extension from blob mime/type
+            }
         }
-        if (value instanceof HTMLInputElement) {
-            filename = value.files[0].name;
-            value = value.files[0];
-            worth = true;
-        } else if (value.getContext != null) {
-            value = window.Blob ? dataURLtoBlob(value.toDataURL()) : "dl-api-"+(value.toDataURL());
-            worth = true;
-        } else if (window.Blob && (value instanceof Blob)) {
-            worth = true;
-            filename = 'blob.' + value.type.match(/\/(.*)/)[1]; // get extension from blob mime/type
+
+        if(formdata != null){
+            formdata.append(field, value, filename || "file");
+        }else{
+            data[field] = value;
         }
-        //
-        // Consider serialization to keep data types here: http://phpjs.org/functions/serialize/
-        //
-        formdata.append(field, value, filename || "file");
       }
 
-      if (worth) {
+      if (worth && formdata != null) {
         payload = formdata;
       }
     }
