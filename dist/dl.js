@@ -8372,10 +8372,9 @@ DL.Client.prototype.request = function(segments, method, data) {
   }
   // Compute payload
   payload = this.getPayload(method, data);
-
   // Compute request headers
   request_headers = this.getHeaders();
-  if(!(payload instanceof FormData)){
+  if(!(window.FormData && payload instanceof FormData)){
     request_headers["Content-Type"] = 'application/json'; // exchange data via JSON to keep basic data types
   }
 
@@ -8430,11 +8429,10 @@ DL.Client.prototype.request = function(segments, method, data) {
     request.open(method, (method === 'GET' && data ? url+'?'+data : url), !sync);
     if(headers != null){
         for (var header in headers) {
-        request.setRequestHeader(header, headers[header]);
+           request.setRequestHeader(header, headers[header]);
+        }
     }
     request.send(method !== 'GET' ? data : null);
-    }
-
     return deferred.promise;
 };
 
@@ -8468,9 +8466,10 @@ DL.Client.prototype.getHeaders = function() {
 DL.Client.prototype.getPayload = function(method, data) {
   var payload = null;
   if (data) {
-    if (data instanceof FormData){
+    if (window.FormData && (data instanceof FormData)){
       payload = data;
-    } else if (method !== "GET") {
+
+    } else if (method !== "GET" && window.FormData) {
       var field, value, filename,
           formdata = new FormData(),
           worth = false;
@@ -8482,7 +8481,7 @@ DL.Client.prototype.getPayload = function(method, data) {
         if(value === undefined){
             continue;
         }
-        if (value.files != null) {
+        if (value instanceof HTMLInputElement) {
             filename = value.files[0].name;
             value = value.files[0];
             worth = true;
