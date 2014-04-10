@@ -3,7 +3,7 @@
  * https://github.com/doubleleft/dl-api-javascript
  *
  * @copyright 2014 Doubleleft
- * @build 4/8/2014
+ * @build 4/9/2014
  */
 (function(window) {
   //
@@ -8480,6 +8480,9 @@ DL.Client.prototype.getPayload = function(method, data) {
         value = data[field];
         filename = null;
         
+        if(value == null){
+            continue;
+        }
         if(typeof(value) === "function" || typeof(value) === "object"){
             if((value instanceof HTMLInputElement)){
                 filename = value.files[0].name;
@@ -8497,7 +8500,11 @@ DL.Client.prototype.getPayload = function(method, data) {
         }
 
         if(formdata != null){
-            formdata.append(field, value, filename || "file");
+            try{
+                formdata.append(field, value, filename || "file");
+            }catch(e){
+                formdata.append(field, value); //firefox fix (apparently there is no third argument)
+            }
         }else{
             data[field] = value;
         }
