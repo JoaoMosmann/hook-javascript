@@ -3,7 +3,7 @@
  * https://github.com/doubleleft/dl-api-javascript
  *
  * @copyright 2014 Doubleleft
- * @build 4/9/2014
+ * @build 5/12/2014
  */
 (function(define) { 'use strict';
 define(function (require) {
@@ -189,7 +189,7 @@ DL.Client.prototype.request = function(segments, method, data) {
         }
     }
 
-    var request = new XMLHttpRequest();
+    var request = (url.indexOf('http') === 0 && typeof XDomainRequest !== 'undefined') ? new XDomainRequest() : new XMLHttpRequest();
     request.onreadystatechange = function(){
         if(this.readyState != 4){
             return;
@@ -218,11 +218,21 @@ DL.Client.prototype.request = function(segments, method, data) {
         }
     };
 
-    request.open(method, (method === 'GET' && data ? url+'?'+data : url), !sync);
-    if(headers != null){
-        for (var header in headers) {
-            request.setRequestHeader(header, headers[header]);
+    if(request instanceof XMLHttpRequest){
+        request.open(method, (method === 'GET' && data ? url+'?'+data : url), !sync);
+        if(headers != null){
+            for (var header in headers) {
+                request.setRequestHeader(header, headers[header]);
+            }
         }
+    }else{
+        if(headers != null){
+            url = url + "?";
+            for(var header in headers){
+                url += header+"="+headers[header]+"&";
+            }
+        }
+        request.open(method, (method === 'GET' && data ? url+data : url), !sync);
     }
     request.send(method !== 'GET' ? data : null);
     return deferred.promise;
