@@ -71,16 +71,46 @@ DL.Auth.prototype.setCurrentUser = function(data) {
  *       });
  *     }, {scope: 'email'});
  *
+  * @example Authenticating with Github
+ *
+ *     client.auth.authenticate('github').then(function(user) {
+ *       console.log("Registered user: ", user);
+ *     });
+ *
  *
  */
 DL.Auth.prototype.authenticate = function(provider, data) {
+  // OAuth providers
+  var oauth = ['github'];
   var promise, that = this;
-  if (typeof(data)==="undefined") { data = {}; }
-  promise = this.client.post('auth/' + provider, data);
-  promise.then(function(data) {
-    that._registerToken(data);
-  });
-  return promise;
+
+  console.log("contain", oauth.indexOf(provider));
+
+  if(oauth.indexOf(provider) === -1){
+    // Regular API flow
+    if (typeof(data)==="undefined") { data = {}; }
+    promise = this.client.post('auth/' + provider, data);
+    promise.then(function(data) {
+      that._registerToken(data);
+    });
+    return promise;
+  } else {
+    console.log("oauth");
+    uri = this.client.getURL('auth/' + provider);
+    relay_uri = this.client.getURL('auth/' + provider + "_relay");
+
+    // Open popup for user to log in
+    WinChan.open({
+      url: uri,
+      relay_url: relay_uri,
+      window_features: "menubar=0,location=0,resizable=0,scrollbars=0,status=0,dialog=1,width=700,height=375",
+      params: data
+    }, function(err, r) {
+      // err is a string on failure, otherwise r is the response object
+      console.log("yey!",err,r);
+    });
+
+  }
 };
 
 /**

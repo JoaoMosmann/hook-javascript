@@ -178,9 +178,7 @@ DL.Client.prototype.request = function(segments, method, data) {
 
   } else if (typeof(XDomainRequest) !== "undefined") {
     // XMLHttpRequest#setRequestHeader isn't implemented on Internet Explorer's XDomainRequest
-    segments += "?X-App-Id=" + this.appId + "&X-App-Key=" + this.key;
-    var auth_token = this.auth.getToken();
-    if (auth_token) { segments += '&X-Auth-Token=' + auth_token; }
+    segments = this.appendKeysToURL(segments);
   }
 
   deferred.promise.xhr = uxhr((this.proxy || this.url) + segments, payload, {
@@ -214,6 +212,32 @@ DL.Client.prototype.request = function(segments, method, data) {
 
   return deferred.promise;
 };
+
+/**
+ * Append auth and api keys to an URI (as GET parameters)
+ * @method appendKeysToURL
+ * @param uri
+ * @return String
+ */
+DL.Client.prototype.appendKeysToURL = function(uri) {
+    var separator = uri.indexOf('?') === -1 ? '?' : '#';
+    uri += separator +"X-App-Id=" + this.appId + "&X-App-Key=" + this.key;
+    var auth_token = this.auth.getToken();
+    if (auth_token) { uri += '&X-Auth-Token=' + auth_token; }
+    return uri;
+}
+
+/**
+ * Returns a full URL for a given segment
+ * @method getURL
+ * @param segments
+ * @return String
+ */
+DL.Client.prototype.getURL = function(segments) {
+    return (this.proxy || this.url) + this.appendKeysToURL(segments);
+}
+
+
 
 /**
  * Get XHR headers for app/auth context.

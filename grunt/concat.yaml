@@ -19,6 +19,9 @@ javascripts:
     - 'bower_components/eventsource/eventsource.js'
     - 'bower_components/wampy/src/wampy.js'
 
+    # Allow crossdomain comunication
+    - 'bower_components/winchan/winchan.js'
+
     - 'src/core/*.js'
     - 'src/*.js'
     - 'src/channel/*.js'

@@ -3,7 +3,7 @@
  * https://github.com/doubleleft/dl-api-javascript
  *
  * @copyright 2014 Doubleleft
- * @build 5/16/2014
+ * @build 5/19/2014
  */
 (function(define) { 'use strict';
 define(function (require) {
@@ -201,9 +201,7 @@ DL.Client.prototype.request = function(segments, method, data) {
 
   } else if (typeof(XDomainRequest) !== "undefined") {
     // XMLHttpRequest#setRequestHeader isn't implemented on Internet Explorer's XDomainRequest
-    segments += "?X-App-Id=" + this.appId + "&X-App-Key=" + this.key;
-    var auth_token = this.auth.getToken();
-    if (auth_token) { segments += '&X-Auth-Token=' + auth_token; }
+    segments = this.appendKeysToURL(segments);
   }
 
   deferred.promise.xhr = uxhr((this.proxy || this.url) + segments, payload, {
@@ -237,6 +235,32 @@ DL.Client.prototype.request = function(segments, method, data) {
 
   return deferred.promise;
 };
+
+/**
+ * Append auth and api keys to an URI (as GET parameters)
+ * @method appendKeysToURL
+ * @param uri
+ * @return String
+ */
+DL.Client.prototype.appendKeysToURL = function(uri) {
+    var separator = uri.indexOf('?') === -1 ? '?' : '#';
+    uri += separator +"X-App-Id=" + this.appId + "&X-App-Key=" + this.key;
+    var auth_token = this.auth.getToken();
+    if (auth_token) { uri += '&X-Auth-Token=' + auth_token; }
+    return uri;
+}
+
+/**
+ * Returns a full URL for a given segment
+ * @method getURL
+ * @param segments
+ * @return String
+ */
+DL.Client.prototype.getURL = function(segments) {
+    return (this.proxy || this.url) + this.appendKeysToURL(segments);
+}
+
+
 
 /**
  * Get XHR headers for app/auth context.
@@ -497,16 +521,46 @@ DL.Auth.prototype.setCurrentUser = function(data) {
  *       });
  *     }, {scope: 'email'});
  *
+  * @example Authenticating with Github
+ *
+ *     client.auth.authenticate('github').then(function(user) {
+ *       console.log("Registered user: ", user);
+ *     });
+ *
  *
  */
 DL.Auth.prototype.authenticate = function(provider, data) {
+  // OAuth providers
+  var oauth = ['github'];
   var promise, that = this;
-  if (typeof(data)==="undefined") { data = {}; }
-  promise = this.client.post('auth/' + provider, data);
-  promise.then(function(data) {
-    that._registerToken(data);
-  });
-  return promise;
+
+  console.log("contain", oauth.indexOf(provider));
+
+  if(oauth.indexOf(provider) === -1){
+    // Regular API flow
+    if (typeof(data)==="undefined") { data = {}; }
+    promise = this.client.post('auth/' + provider, data);
+    promise.then(function(data) {
+      that._registerToken(data);
+    });
+    return promise;
+  } else {
+    console.log("oauth");
+    uri = this.client.getURL('auth/' + provider);
+    relay_uri = this.client.getURL('auth/' + provider + "_relay");
+
+    // Open popup for user to log in
+    WinChan.open({
+      url: uri,
+      relay_url: relay_uri,
+      window_features: "menubar=0,location=0,resizable=0,scrollbars=0,status=0,dialog=1,width=700,height=375",
+      params: data
+    }, function(err, r) {
+      // err is a string on failure, otherwise r is the response object
+      console.log("yey!",err,r);
+    });
+
+  }
 };
 
 /**

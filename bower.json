@@ -16,6 +16,7 @@
   ],
   "dependencies" : {
     "uxhr": "endel/uxhr#5e26b1798d82a4d73275e1128a59f580c25e302f",
+    "winchan": "mozilla/winchan#ac4b142c34daa84bbcb5d8663fad19ce6394cb18",
     "qunit": "~1.9.0",
     "when": "~2.8.0",
     "lodash": "~2.4.0",
