@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>DL - dl-api-javascript</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="dl-api-javascript"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/Backbone.DLCollection.html">Backbone.DLCollection</a></li>
+            
+                <li><a href="../classes/Backbone.DLModel.html">Backbone.DLModel</a></li>
+            
+                <li><a href="../classes/Cordova.html">Cordova</a></li>
+            
+                <li><a href="../classes/DL.Auth.html">DL.Auth</a></li>
+            
+                <li><a href="../classes/DL.Channel.SSE.html">DL.Channel.SSE</a></li>
+            
+                <li><a href="../classes/DL.Channel.WEBSOCKETS.html">DL.Channel.WEBSOCKETS</a></li>
+            
+                <li><a href="../classes/DL.Client.html">DL.Client</a></li>
+            
+                <li><a href="../classes/DL.Collection.html">DL.Collection</a></li>
+            
+                <li><a href="../classes/DL.Events.html">DL.Events</a></li>
+            
+                <li><a href="../classes/DL.Files.html">DL.Files</a></li>
+            
+                <li><a href="../classes/DL.Iterable.html">DL.Iterable</a></li>
+            
+                <li><a href="../classes/DL.KeyValues.html">DL.KeyValues</a></li>
+            
+                <li><a href="../classes/DL.Pagination.html">DL.Pagination</a></li>
+            
+                <li><a href="../classes/DL.Plugin.Cordova.PushNotification.html">DL.Plugin.Cordova.PushNotification</a></li>
+            
+                <li><a href="../classes/DL.PluginManager.html">DL.PluginManager</a></li>
+            
+                <li><a href="../classes/DL.System.html">DL.System</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/Backbone.html">Backbone</a></li>
+            
+                <li><a href="../modules/DL.html">DL</a></li>
+            
+                <li><a href="../modules/DL.Plugin.html">DL.Plugin</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1>DL Module</h1>
+<div class="box clearfix meta">
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+<div class="box intro">
+    <p>Deals with user registration/authentication</p>
+
+</div>
+
+
+    <div class="example">
+        <h4>Example:</h4>
+        <div class="example-content">
+            <p> Connecting through websockets.</p>
+<pre class="code prettyprint"><code>var channel = client.channel(&#39;messages&#39;, { transport: &quot;websockets&quot; });</code></pre>
+<p> Force socket server endpoint.</p>
+<pre class="code prettyprint"><code>var channel = client.channel(&#39;messages&#39;, {
+  transport: &quot;websockets&quot;,
+  url: &quot;ws://localhost:8080&quot;
+});</code></pre>
+
+        </div>
+    </div>
+
+
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+        
+            <p>This module provides the following classes:</p>
+
+            <ul class="module-classes">
+            
+                <li class="module-class">
+                    <a href="../classes/DL.Auth.html">
+                        DL.Auth
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.Channel.SSE.html">
+                        DL.Channel.SSE
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.Channel.WEBSOCKETS.html">
+                        DL.Channel.WEBSOCKETS
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.Client.html">
+                        DL.Client
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.Collection.html">
+                        DL.Collection
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.Events.html">
+                        DL.Events
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.Files.html">
+                        DL.Files
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.Iterable.html">
+                        DL.Iterable
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.KeyValues.html">
+                        DL.KeyValues
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.Pagination.html">
+                        DL.Pagination
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.PluginManager.html">
+                        DL.PluginManager
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/DL.System.html">
+                        DL.System
+                    </a>
+                </li>
+            
+            </ul>
+        
+    </div>
+
+    <div class="yui3-u-1-2">
+        
+    </div>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

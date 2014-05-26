@@ -1,0 +1,2263 @@
+{
+    "project": {
+        "name": "dl-api-javascript",
+        "description": "Doubleleft API javascript client.",
+        "version": "0.1.0",
+        "url": "https://github.com/doubleleft/dl-api-javascript",
+        "nocode": "true",
+        "themedir": "yuidoc-theme"
+    },
+    "files": {
+        "src/channel/sse.js": {
+            "name": "src/channel/sse.js",
+            "modules": {},
+            "classes": {
+                "DL.Channel.SSE": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/channel/websockets.js": {
+            "name": "src/channel/websockets.js",
+            "modules": {},
+            "classes": {
+                "DL.Channel.WEBSOCKETS": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/core/api.js": {
+            "name": "src/core/api.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/core/client.js": {
+            "name": "src/core/client.js",
+            "modules": {},
+            "classes": {
+                "DL.Client": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/core/events.js": {
+            "name": "src/core/events.js",
+            "modules": {},
+            "classes": {
+                "DL.Events": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/core/iterable.js": {
+            "name": "src/core/iterable.js",
+            "modules": {},
+            "classes": {
+                "DL.Iterable": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/core/plugins.js": {
+            "name": "src/core/plugins.js",
+            "modules": {},
+            "classes": {
+                "DL.PluginManager": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/plugins/cordova/cordova.js": {
+            "name": "src/plugins/cordova/cordova.js",
+            "modules": {
+                "DL.Plugin": 1
+            },
+            "classes": {
+                "Cordova": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/plugins/cordova/push_notification.js": {
+            "name": "src/plugins/cordova/push_notification.js",
+            "modules": {},
+            "classes": {
+                "DL.Plugin.Cordova.PushNotification": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/plugins/backbone.js": {
+            "name": "src/plugins/backbone.js",
+            "modules": {
+                "Backbone": 1
+            },
+            "classes": {
+                "Backbone.DLModel": 1,
+                "Backbone.DLCollection": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/auth.js": {
+            "name": "src/auth.js",
+            "modules": {
+                "DL": 1
+            },
+            "classes": {
+                "DL.Auth": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/channel.js": {
+            "name": "src/channel.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/collection.js": {
+            "name": "src/collection.js",
+            "modules": {},
+            "classes": {
+                "DL.Collection": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/collection_item.js": {
+            "name": "src/collection_item.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/files.js": {
+            "name": "src/files.js",
+            "modules": {},
+            "classes": {
+                "DL.Files": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/key_values.js": {
+            "name": "src/key_values.js",
+            "modules": {},
+            "classes": {
+                "DL.KeyValues": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/pagination.js": {
+            "name": "src/pagination.js",
+            "modules": {},
+            "classes": {
+                "DL.Pagination": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/system.js": {
+            "name": "src/system.js",
+            "modules": {},
+            "classes": {
+                "DL.System": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "DL": {
+            "name": "DL",
+            "submodules": {},
+            "classes": {
+                "DL.Channel.SSE": 1,
+                "DL.Channel.WEBSOCKETS": 1,
+                "DL.Client": 1,
+                "DL.Events": 1,
+                "DL.Iterable": 1,
+                "DL.PluginManager": 1,
+                "DL.Auth": 1,
+                "DL.Collection": 1,
+                "DL.Files": 1,
+                "DL.KeyValues": 1,
+                "DL.Pagination": 1,
+                "DL.System": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/system.js",
+            "line": 1,
+            "description": "Deals with user registration/authentication",
+            "params": [
+                {
+                    "name": "client",
+                    "description": "",
+                    "type": "Client"
+                },
+                {
+                    "name": "namespace",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "optional",
+                    "type": "Object"
+                }
+            ],
+            "is_constructor": 1,
+            "example": [
+                " Connecting through websockets.\n\n    var channel = client.channel('messages', { transport: \"websockets\" });",
+                " Force socket server endpoint.\n\n    var channel = client.channel('messages', {\n      transport: \"websockets\",\n      url: \"ws://localhost:8080\"\n    });"
+            ],
+            "static": 1,
+            "extends": "DL.Events"
+        },
+        "DL.Plugin": {
+            "name": "DL.Plugin",
+            "submodules": {},
+            "classes": {
+                "Cordova": 1,
+                "DL.Plugin.Cordova.PushNotification": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/plugins/cordova/push_notification.js",
+            "line": 10
+        },
+        "Backbone": {
+            "name": "Backbone",
+            "submodules": {},
+            "classes": {
+                "Backbone.DLModel": 1,
+                "Backbone.DLCollection": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/plugins/backbone.js",
+            "line": 45
+        }
+    },
+    "classes": {
+        "DL.Channel.SSE": {
+            "name": "DL.Channel.SSE",
+            "shortname": "DL.Channel.SSE",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/channel/sse.js",
+            "line": 1
+        },
+        "DL.Channel.WEBSOCKETS": {
+            "name": "DL.Channel.WEBSOCKETS",
+            "shortname": "DL.Channel.WEBSOCKETS",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/channel/websockets.js",
+            "line": 1
+        },
+        "DL.Client": {
+            "name": "DL.Client",
+            "shortname": "DL.Client",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/core/client.js",
+            "line": 1,
+            "description": "DL.Client is the entry-point for using dl-api.\n\nYou should instantiate a global javascript client for consuming dl-api.\n\n```javascript\nwindow.dl = new DL.Client({\n  url: \"http://local-or-remote-dl-api-address.com/api/public/index.php/\",\n  appId: 1,    // your app's id\n  key: 'test'  // your app's public key\n});\n```"
+        },
+        "DL.Events": {
+            "name": "DL.Events",
+            "shortname": "DL.Events",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/core/events.js",
+            "line": 1
+        },
+        "DL.Iterable": {
+            "name": "DL.Iterable",
+            "shortname": "DL.Iterable",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/core/iterable.js",
+            "line": 1,
+            "description": "Iterable is for internal use only."
+        },
+        "DL.PluginManager": {
+            "name": "DL.PluginManager",
+            "shortname": "DL.PluginManager",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/core/plugins.js",
+            "line": 1
+        },
+        "Cordova": {
+            "name": "Cordova",
+            "shortname": "Cordova",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL.Plugin",
+            "namespace": "",
+            "file": "src/plugins/cordova/cordova.js",
+            "line": 1
+        },
+        "DL.Plugin.Cordova.PushNotification": {
+            "name": "DL.Plugin.Cordova.PushNotification",
+            "shortname": "DL.Plugin.Cordova.PushNotification",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL.Plugin",
+            "namespace": "",
+            "file": "src/plugins/cordova/push_notification.js",
+            "line": 10,
+            "extends": "DL.Events"
+        },
+        "Backbone.DLModel": {
+            "name": "Backbone.DLModel",
+            "shortname": "Backbone.DLModel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Backbone",
+            "namespace": "",
+            "file": "src/plugins/backbone.js",
+            "line": 6
+        },
+        "Backbone.DLCollection": {
+            "name": "Backbone.DLCollection",
+            "shortname": "Backbone.DLCollection",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Backbone",
+            "namespace": "",
+            "file": "src/plugins/backbone.js",
+            "line": 45
+        },
+        "DL.Auth": {
+            "name": "DL.Auth",
+            "shortname": "DL.Auth",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/auth.js",
+            "line": 1,
+            "description": "Deals with user registration/authentication"
+        },
+        "DL.Collection": {
+            "name": "DL.Collection",
+            "shortname": "DL.Collection",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/collection.js",
+            "line": 1
+        },
+        "DL.Files": {
+            "name": "DL.Files",
+            "shortname": "DL.Files",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/files.js",
+            "line": 1
+        },
+        "DL.KeyValues": {
+            "name": "DL.KeyValues",
+            "shortname": "DL.KeyValues",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/key_values.js",
+            "line": 1
+        },
+        "DL.Pagination": {
+            "name": "DL.Pagination",
+            "shortname": "DL.Pagination",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/pagination.js",
+            "line": 1
+        },
+        "DL.System": {
+            "name": "DL.System",
+            "shortname": "DL.System",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "DL",
+            "namespace": "",
+            "file": "src/system.js",
+            "line": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/channel/sse.js",
+            "line": 19,
+            "description": "Subscribe to channel. Publishes a 'connected' message on the first time.",
+            "itemtype": "method",
+            "name": "subscribe",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "(optional)",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Registering for all messages\n\n    channel.subscribe(function(event, data) {\n      console.log(\"Message: \", event, data);\n    })",
+                " Registering for a single custom event\n\n    channel.subscribe('some-event', function(data) {\n      console.log(\"Custom event triggered: \", data);\n    })",
+                " Registering for client connected/disconnected events\n\n    channel.subscribe('connected', function(data) {\n      console.log(\"New client connected: \", data.client_id);\n    });\n    channel.subscribe('disconnected', function(data) {\n      console.log(\"Client disconnected: \", data.client_id);\n    });",
+                " Registering error event\n\n    channel.subscribe('state:open', function(e) {\n      console.log(\"Error: \", e);\n    });\n    channel.subscribe('state:error', function(e) {\n      console.log(\"Error: \", e);\n    });\n\n"
+            ],
+            "class": "DL.Channel.SSE",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/sse.js",
+            "line": 91,
+            "class": "DL.Channel.SSE",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/sse.js",
+            "line": 104,
+            "description": "Is EventSource listenning to messages?",
+            "itemtype": "method",
+            "name": "isConnected",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "DL.Channel.SSE",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/sse.js",
+            "line": 113,
+            "description": "Unsubscribe to a event listener",
+            "itemtype": "method",
+            "name": "unsubscribe",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "DL.Channel.SSE",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/sse.js",
+            "line": 124,
+            "description": "Publish event message",
+            "itemtype": "method",
+            "name": "publish",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "message",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Channel.SSE",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/sse.js",
+            "line": 186,
+            "description": "Disconnect from channel, publishing a 'disconnected' message.",
+            "itemtype": "method",
+            "name": "disconnect",
+            "params": [
+                {
+                    "name": "synchronous",
+                    "description": "default = false",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DL.Channel"
+            },
+            "class": "DL.Channel.SSE",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/sse.js",
+            "line": 202,
+            "description": "Close event source connection.",
+            "itemtype": "method",
+            "name": "close",
+            "return": {
+                "description": "this",
+                "type": "Channel"
+            },
+            "class": "DL.Channel.SSE",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/websockets.js",
+            "line": 55,
+            "description": "Subscribe to channel. Publishes a 'connected' message on the first time.",
+            "itemtype": "method",
+            "name": "subscribe",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "(optional)",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "DL.Channel"
+            },
+            "example": [
+                " Registering for a single custom event\n\n    channel.subscribe('some-event', function(data) {\n      console.log(\"Custom event triggered: \", data);\n    })",
+                " Registering for client connected/disconnected events\n\n    channel.subscribe('connected', function(data) {\n      console.log(\"New client connected: \", data.client_id);\n    });\n    channel.subscribe('disconnected', function(data) {\n      console.log(\"Client disconnected: \", data.client_id);\n    });\n"
+            ],
+            "class": "DL.Channel.WEBSOCKETS",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/websockets.js",
+            "line": 83,
+            "description": "Is EventSource listenning to messages?",
+            "itemtype": "method",
+            "name": "isConnected",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "DL.Channel.WEBSOCKETS",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/websockets.js",
+            "line": 92,
+            "description": "Unsubscribe to a event listener",
+            "itemtype": "method",
+            "name": "unsubscribe",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "DL.Channel"
+            },
+            "class": "DL.Channel.WEBSOCKETS",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/websockets.js",
+            "line": 103,
+            "description": "Publish event message",
+            "itemtype": "method",
+            "name": "publish",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "message",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "'exclude' and 'elegible' are optional options.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "DL.Channel"
+            },
+            "class": "DL.Channel.WEBSOCKETS",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/websockets.js",
+            "line": 130,
+            "description": "Disconnect from channel, publishing a 'disconnected' message.",
+            "itemtype": "method",
+            "name": "disconnect",
+            "return": {
+                "description": "this",
+                "type": "DL.Channel"
+            },
+            "class": "DL.Channel.WEBSOCKETS",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel/websockets.js",
+            "line": 140,
+            "itemtype": "method",
+            "name": "call",
+            "params": [
+                {
+                    "name": "procedure",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Channel.WEBSOCKETS",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 43,
+            "itemtype": "property",
+            "name": "keys",
+            "type": "DL.KeyValues",
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 48,
+            "itemtype": "property",
+            "name": "auth",
+            "type": "DL.Auth",
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 53,
+            "itemtype": "property",
+            "name": "files",
+            "type": "DL.Fiels",
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 58,
+            "itemtype": "property",
+            "name": "system",
+            "type": "DL.System",
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 67,
+            "description": "Get collection instance.",
+            "itemtype": "method",
+            "name": "collection",
+            "params": [
+                {
+                    "name": "collectionName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "DL.Collection"
+            },
+            "example": [
+                " Retrieve a collection reference. Your collection tables are created on demand.\n\n    // Users collection\n    var users = client.collection('users');\n\n    // Highscores\n    var highscores = client.collection('highscores');\n"
+            ],
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 86,
+            "description": "Get channel instance.",
+            "itemtype": "method",
+            "name": "channel",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "(optional)",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "DL.Channel"
+            },
+            "example": [
+                " Create a channel using Servet-Sent Events transport.\n\n    var channel = client.channel('messages');",
+                " Create a channel using WebSockets transport.\n\n    var channel = client.channel('messages', { transport: \"websockets\" });\n"
+            ],
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 115,
+            "itemtype": "method",
+            "name": "post",
+            "params": [
+                {
+                    "name": "segments",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 127,
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "segments",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 136,
+            "itemtype": "method",
+            "name": "put",
+            "params": [
+                {
+                    "name": "segments",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 145,
+            "itemtype": "method",
+            "name": "delete",
+            "params": [
+                {
+                    "name": "segments",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 153,
+            "itemtype": "method",
+            "name": "request",
+            "params": [
+                {
+                    "name": "segments",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "method",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 221,
+            "description": "Get XHR headers for app/auth context.",
+            "itemtype": "method",
+            "name": "getHeaders",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/client.js",
+            "line": 241,
+            "description": "Get payload of given data",
+            "itemtype": "method",
+            "name": "getPayload",
+            "params": [
+                {
+                    "name": "requestMethod",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String|FormData"
+            },
+            "class": "DL.Client",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/iterable.js",
+            "line": 8,
+            "itemtype": "method",
+            "name": "each",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Iterable",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/iterable.js",
+            "line": 15,
+            "itemtype": "method",
+            "name": "find",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Iterable",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/iterable.js",
+            "line": 22,
+            "itemtype": "method",
+            "name": "filter",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Iterable",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/iterable.js",
+            "line": 29,
+            "itemtype": "method",
+            "name": "max",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Iterable",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/iterable.js",
+            "line": 36,
+            "itemtype": "method",
+            "name": "min",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Iterable",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/iterable.js",
+            "line": 43,
+            "itemtype": "method",
+            "name": "every",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Iterable",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/iterable.js",
+            "line": 50,
+            "itemtype": "method",
+            "name": "reject",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Iterable",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/iterable.js",
+            "line": 57,
+            "itemtype": "method",
+            "name": "groupBy",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Iterable",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/iterable.js",
+            "line": 64,
+            "description": "Iterate using lodash function",
+            "itemtype": "method",
+            "name": "_iterate",
+            "params": [
+                {
+                    "name": "method",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "argument",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Iterable",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/plugins.js",
+            "line": 10,
+            "description": "Register plugin to be instantiated on DL.Client",
+            "itemtype": "method",
+            "name": "register",
+            "params": [
+                {
+                    "name": "class",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "static": 1,
+            "class": "DL.PluginManager",
+            "module": "DL"
+        },
+        {
+            "file": "src/core/plugins.js",
+            "line": 20,
+            "description": "Register all plugins on target DL.Client",
+            "itemtype": "method",
+            "name": "setup",
+            "params": [
+                {
+                    "name": "client",
+                    "description": "",
+                    "type": "DL.Client"
+                }
+            ],
+            "static": 1,
+            "class": "DL.PluginManager",
+            "module": "DL"
+        },
+        {
+            "file": "src/plugins/cordova/cordova.js",
+            "line": 8,
+            "itemtype": "property",
+            "name": "push",
+            "type": "DL.Plugin.Cordova.PushNotification",
+            "class": "Cordova",
+            "module": "DL.Plugin"
+        },
+        {
+            "file": "src/plugins/cordova/push_notification.js",
+            "line": 1,
+            "description": "-------------\nDependency plugins:\n-------------\n- https://github.com/phonegap-build/PushPlugin\n- https://github.com/apache/cordova-plugin-device\n- https://github.com/danmichaelo/cordova-plugin-appinfo",
+            "class": "DL.Plugin.Cordova.PushNotification",
+            "module": "DL.Plugin"
+        },
+        {
+            "file": "src/plugins/cordova/push_notification.js",
+            "line": 41,
+            "description": "Register device for Push Notifications",
+            "itemtype": "method",
+            "name": "register",
+            "return": {
+                "description": "DL.Plugin.Cordova.PushNotification"
+            },
+            "example": [
+                " Registering for push notifications on Android\n\n    //\n    // Get a senderID on your app's Google Console\n    // - https://developers.google.com/console\n    //\n    dl.cordova.push.register({senderID: \"xxxx\"}).on('notification', function(e) {\n      console.log(\"Notification: \", e);\n    });",
+                " Registering for push notifications on iOS\n\n    dl.cordova.push.register().on('notification', function(e) {\n      console.log(\"Notification: \", e);\n    });"
+            ],
+            "class": "DL.Plugin.Cordova.PushNotification",
+            "module": "DL.Plugin"
+        },
+        {
+            "file": "src/plugins/cordova/push_notification.js",
+            "line": 205,
+            "description": "Unregister device for Push Notifications",
+            "itemtype": "method",
+            "name": "unregister",
+            "class": "DL.Plugin.Cordova.PushNotification",
+            "module": "DL.Plugin"
+        },
+        {
+            "file": "src/plugins/cordova/push_notification.js",
+            "line": 212,
+            "description": "method _registerDevice",
+            "class": "DL.Plugin.Cordova.PushNotification",
+            "module": "DL.Plugin"
+        },
+        {
+            "file": "src/plugins/backbone.js",
+            "line": 58,
+            "description": "Reset collection data and triggers 'fetch' event.",
+            "itemtype": "method",
+            "name": "fetchRemote",
+            "params": [
+                {
+                    "name": "models",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "class": "Backbone.DLCollection",
+            "module": "Backbone"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 12,
+            "itemtype": "property",
+            "name": "currentUser",
+            "type": "{Object}",
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 37,
+            "itemtype": "method",
+            "name": "setUserData",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DL.Auth"
+            },
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 60,
+            "description": "Register user using current authentication provider.",
+            "params": [
+                {
+                    "name": "provider",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "register",
+            "example": [
+                " Register with email address\n\n    client.auth.register('email', {\n      email: \"daliberti@doubleleft.com\",\n      name: \"Danilo Aliberti\",\n      password: \"123\"\n    }).then(function(user) {\n      console.log(\"Registered user: \", user);\n    });",
+                " Register with Facebook\n\n    FB.login(function(response) {\n      client.auth.register('facebook', response.authResponse).then(function(user) {\n        console.log(\"Registered user: \", user);\n      });\n    }, {scope: 'email'});\n"
+            ],
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 95,
+            "itemtype": "method",
+            "name": "authenticate",
+            "see": [
+                "register"
+            ],
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 104,
+            "description": "Verify if user is already registered, and log-in if succeed.",
+            "itemtype": "method",
+            "name": "login",
+            "params": [
+                {
+                    "name": "provider",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                "\n\n    client.auth.login('email', {email: \"edreyer@doubleleft.com\", password: \"123\"}).then(function(data){\n      console.log(\"User found: \", data);\n    }, function(data){\n      console.log(\"User not found or password invalid.\", data);\n    });\n\nVerify if user is already registered, and log-in if succeed."
+            ],
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 131,
+            "itemtype": "method",
+            "name": "verify",
+            "see": [
+                "login"
+            ],
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 140,
+            "description": "Send a 'forgot password' confirmation email to target user email address.",
+            "itemtype": "method",
+            "name": "forgotPassword",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                "\n\n    client.auth.forgotPassword({\n      email: \"edreyer@doubleleft.com\",\n      subject: \"Project name: Forgot your password?\",\n      template: \"Hi {{name}}, click here to reset your password http://custom-project.com/pass-recovery-path.html?token={{token}}\"\n    }).then(function(data){\n      console.log(\"Email enviado!\", data);\n    }, function(data){\n      console.log(\"User not found: \", data);\n    });"
+            ],
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 163,
+            "description": "Reset user password",
+            "itemtype": "method",
+            "name": "resetPassword",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "password",
+                            "description": "",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "token",
+                            "description": "[optional]",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Getting token automatically from query string\n\n    client.auth.resetPassword(\"my-new-password-123\").then(function(data){\n      console.log(\"Password reseted! \", data);\n    }, function(data){\n      console.log(\"Error\", data.error);\n    });",
+                " Providing a token manually\n\n    client.auth.resetPassword({token: \"xxx\", password: \"my-new-password-123\"}).then(function(data){\n      console.log(\"Password reseted! \", data);\n    }, function(data){\n      console.log(\"Error\", data.error);\n    });\n"
+            ],
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 199,
+            "itemtype": "method",
+            "name": "logout",
+            "return": {
+                "description": "this",
+                "type": "DL.Auth"
+            },
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/auth.js",
+            "line": 207,
+            "itemtype": "method",
+            "name": "getToken",
+            "return": {
+                "description": "",
+                "type": "String|null"
+            },
+            "class": "DL.Auth",
+            "module": "DL"
+        },
+        {
+            "file": "src/channel.js",
+            "line": 1,
+            "description": "Channel implementations",
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 22,
+            "description": "Create a new resource",
+            "itemtype": "method",
+            "name": "create",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DL.Collection"
+            },
+            "example": [
+                " Creating an entry\n\n    client.collection('posts').create({\n      title: \"Post name\",\n      summary: \"My awesome new post\",\n      stars: 5\n    });",
+                " Listening to complete event\n\n    // Verbose way\n    var c = client.collection('posts');\n    var promise = c.create({ title: \"Post name\", summary: \"Something\", stars: 5 });\n    promise.then(function(data) {\n        console.log(data);\n    });\n\n    // Short way\n    client.collection('posts').create({ title: \"Post name\", summary: \"Something\", stars: 5 }).then(function(data) {\n        console.log(data);\n    });\n"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 55,
+            "description": "Get collection data, based on `where` params.",
+            "itemtype": "method",
+            "name": "get",
+            "return": {
+                "description": "this",
+                "type": "DL.Collection"
+            },
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 64,
+            "description": "Add `where` param",
+            "itemtype": "method",
+            "name": "where",
+            "params": [
+                {
+                    "name": "where",
+                    "description": "params or field name",
+                    "type": "Object | String"
+                },
+                {
+                    "name": "operation",
+                    "description": "'<', '<=', '>', '>=', '!=', 'in', 'between', 'not_in', 'not_between', 'like'",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "value",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DL.Collection"
+            },
+            "example": [
+                " Multiple 'where' calls\n\n    var c = client.collection('posts');\n    c.where('author','Vicente'); // equal operator may be omitted\n    c.where('stars','>',10);     // support '<' and '>' operators\n    c.then(function(result) {\n      console.log(result);\n    });",
+                " One 'where' call\n\n    client.collection('posts').where({\n      author: 'Vicente',\n      stars: ['>', 10]\n    }).then(function(result) {\n      console.log(result);\n    })",
+                " Filtering 'in' value list.\n\n    client.collection('posts').where('author_id', 'in', [500, 501]).then(function(result) {\n      console.log(result);\n    })",
+                " Partial String matching\n\n    client.collection('posts').where('author', 'like', '%Silva%').then(function(result) {\n      console.log(result);\n    })\n"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 128,
+            "description": "Find first item by _id",
+            "itemtype": "method",
+            "name": "find",
+            "params": [
+                {
+                    "name": "_id",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "callback",
+                    "description": "[optional]",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Finding first item by _id, with 'success' callback as param.\n\n    client.collection('posts').find(50, function(data) {\n      console.log(\"Row:\", data);\n    });",
+                " Catching 'not found' error.\n\n    client.collection('posts').find(128371923).then(function(data) {\n      console.log(\"Row:\", data); // will never execute this\n    }).otherwise(function(e) {\n      console.log(\"Not found.\");\n    });\n"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 158,
+            "description": "Group results by field",
+            "itemtype": "method",
+            "name": "group",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "...",
+                    "description": "more fields",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DL.Collection"
+            },
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 170,
+            "description": "Count the number of items on this collection",
+            "itemtype": "method",
+            "name": "count",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "[optional]",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Count the elements of the current query\n\n    client.collection('posts').where('author','Vicente').count(function(total) {\n      console.log(\"Total:\", total);\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 191,
+            "description": "Aggregate field with 'max' values",
+            "itemtype": "method",
+            "name": "max",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "[optional]",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Get the max value from highscore collection\n\n    client.collection('highscore').max('score', function(data) {\n      console.log(\"max: \", data);\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 213,
+            "description": "Aggregate field with 'min' values",
+            "itemtype": "method",
+            "name": "min",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "[optional]",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Get the min value from highscore collection\n\n    client.collection('highscore').min('score', function(data) {\n      console.log(\"min: \", data);\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 235,
+            "description": "Aggregate field with 'avg' values",
+            "itemtype": "method",
+            "name": "avg",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "[optional]",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Get the average value from highscore collection\n\n    client.collection('highscore').avg('score', function(data) {\n      console.log(\"avg: \", data);\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 257,
+            "description": "Aggregate field with 'sum' values",
+            "itemtype": "method",
+            "name": "sum",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "[optional]",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Get the sum value from highscore collection\n\n    client.collection('highscore').sum('score', function(data) {\n      console.log(\"sum: \", data);\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 279,
+            "description": "Query only the first result",
+            "itemtype": "method",
+            "name": "first",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "[optional]",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Return just the first element for current query\n\n    client.collection('users').sort('created_at', -1).first(function(data) {\n      console.log(\"Last created user:\", data);\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 298,
+            "description": "First or create\nmethod firstorCreate\nparam {Object} data\nparam {Function} callback\nreturn {Promise}\n\nexample Return the first match for 'data' param, or create it.\n\n    client.collection('uniques').firstOrCreate({type: \"something\"}).then(function(data) {\n      console.log(\"Unique row: \", data);\n    });",
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 322,
+            "description": "Alias for get & then",
+            "itemtype": "method",
+            "name": "then",
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 333,
+            "description": "Clear collection filtering state",
+            "itemtype": "method",
+            "name": "reset",
+            "return": {
+                "description": "this",
+                "type": "DL.Collection"
+            },
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 348,
+            "itemtype": "method",
+            "name": "sort",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "direction",
+                    "description": "",
+                    "type": "Number|String"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DL.Collection"
+            },
+            "example": [
+                " Return just the first element for current query\n\n    // Ommit the second argument for ascending order:\n    client.collection('users').sort('created_at').then(function(data){ });\n\n    // Use 1 or 'asc' to specify ascending order:\n    client.collection('users').sort('created_at', 1).then(function(data){  });\n    client.collection('users').sort('created_at', 'asc').then(function(data){  });\n\n    // Use -1 or 'desc' for descending order:\n    client.collection('users').sort('created_at', -1).then(function(data) {  });\n    client.collection('users').sort('created_at', 'desc').then(function(data) {  });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 377,
+            "itemtype": "method",
+            "name": "limit",
+            "params": [
+                {
+                    "name": "int",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DL.Collection"
+            },
+            "example": [
+                " Limit the number of rows to retrieve\n\n    client.collection('posts').sort('updated_at', -1).limit(5).then(function(data) {\n      console.log(\"Last 5 rows updated: \", data);\n    });",
+                " Limit and offset\n\n    client.collection('posts').sort('updated_at', -1).limit(5).offset(5).then(function(data) {\n      console.log(\"last 5 rows updated, after 5 lastest: \", data);\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 399,
+            "itemtype": "method",
+            "name": "offset",
+            "see": [
+                "limit"
+            ],
+            "params": [
+                {
+                    "name": "int",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DL.Collection"
+            },
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 411,
+            "description": "Get channel for this collection.",
+            "itemtype": "method",
+            "name": "channel",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "(optional)",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "DL.Channel"
+            },
+            "example": [
+                " Streaming collection data\n\n    client.collection('messages').where('type', 'new-game').channel().subscribe(function(event, data) {\n      console.log(\"Received new-game message: \", data);\n    });\n\n    client.collection('messages').create({type: 'sad', text: \"i'm sad because streaming won't catch me\"});\n    client.collection('messages').create({type: 'new-game', text: \"yey, streaming will catch me!\"});\n"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 432,
+            "itemtype": "method",
+            "name": "paginate",
+            "return": {
+                "description": "",
+                "type": "DL.Pagination"
+            },
+            "params": [
+                {
+                    "name": "perpage_or_callback",
+                    "description": "",
+                    "type": "Mixed"
+                },
+                {
+                    "name": "onComplete",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "onError",
+                    "description": "(optional)",
+                    "type": "Function"
+                }
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 457,
+            "description": "Drop entire collection. This operation is irreversible.",
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 465,
+            "description": "Remove a single row by id",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "[optional]",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Deleting a row by id\n\n    client.collection('posts').remove(1).then(function(data) {\n      console.log(\"Success:\", data.success);\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 485,
+            "description": "Update a single collection entry",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "_id",
+                    "description": "",
+                    "type": "Number | String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "example": [
+                " Updating a single row\n\n    client.collection('posts').update(1, { title: \"Changing post title\" }).then(function(data) {\n      console.log(\"Success:\", data.success);\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 501,
+            "description": "Increment a value from 'field' from all rows matching current filter.",
+            "itemtype": "method",
+            "name": "increment",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Increment user score\n\n    client.collection('users').where('_id', user_id).increment('score', 10).then(function(numRows) {\n      console.log(numRows, \" users has been updated\");\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 523,
+            "description": "Decrement a value from 'field' from all rows matching current filter.",
+            "itemtype": "method",
+            "name": "decrement",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Decrement user score\n\n    client.collection('users').where('_id', user_id).decrement('score', 10).then(function(numRows) {\n      console.log(numRows, \" users has been updated\");\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection.js",
+            "line": 545,
+            "description": "Update all collection's data based on `where` params.",
+            "itemtype": "method",
+            "name": "updateAll",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "key-value data to update from matched rows [optional]",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Updating all rows of the collection\n\n    client.collection('users').updateAll({category: 'everybody'}).then(function(numRows) {\n      console.log(numRows, \" users has been updated\");\n    });",
+                " Updating collection filters\n\n    client.collection('users').where('age','<',18).updateAll({category: 'baby'}).then(function(numRows) {\n      console.log(numRows, \" users has been updated\");\n    });"
+            ],
+            "class": "DL.Collection",
+            "module": "DL"
+        },
+        {
+            "file": "src/collection_item.js",
+            "line": 1,
+            "description": "module DL\nclass DL.CollectionItem\n\nparam {DL.Collection} collection\nparam {Number|String} _id\nconstructor",
+            "class": "DL.Files",
+            "module": "DL"
+        },
+        {
+            "file": "src/files.js",
+            "line": 9,
+            "itemtype": "method",
+            "name": "upload",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Canvas|Blob"
+                },
+                {
+                    "name": "filename",
+                    "description": "[optional]",
+                    "type": "String"
+                },
+                {
+                    "name": "mimeType",
+                    "description": "[optional]",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Files",
+            "module": "DL"
+        },
+        {
+            "file": "src/files.js",
+            "line": 36,
+            "description": "Get file data by id.",
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "_id",
+                    "description": "",
+                    "type": "Number|String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Files",
+            "module": "DL"
+        },
+        {
+            "file": "src/files.js",
+            "line": 46,
+            "description": "Remove file by id.",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "_id",
+                    "description": "",
+                    "type": "Number|String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.Files",
+            "module": "DL"
+        },
+        {
+            "file": "src/key_values.js",
+            "line": 12,
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Get a key value\n\n    client.keys.get('my-custom-key', function(key) {\n      console.log(key.value);\n    });"
+            ],
+            "class": "DL.KeyValues",
+            "module": "DL"
+        },
+        {
+            "file": "src/key_values.js",
+            "line": 32,
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "String|Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "example": [
+                " Set a key value\n\n    client.keys.set('my-custom-key', 'custom value').then(function(key) {\n      console.log(key);\n    });"
+            ],
+            "class": "DL.KeyValues",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 12,
+            "itemtype": "property",
+            "name": "collection",
+            "type": "{DL.Collection}",
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 22,
+            "itemtype": "property",
+            "name": "total",
+            "type": "{Number}",
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 28,
+            "itemtype": "property",
+            "name": "per_page",
+            "type": "{Number}",
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 34,
+            "itemtype": "property",
+            "name": "current_page",
+            "type": "{Number}",
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 40,
+            "itemtype": "property",
+            "name": "last_page",
+            "type": "{Number}",
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 46,
+            "itemtype": "property",
+            "name": "from",
+            "type": "{Number}",
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 52,
+            "itemtype": "property",
+            "name": "to",
+            "type": "{Number}",
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 58,
+            "itemtype": "property",
+            "name": "items",
+            "type": "{Object}",
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 65,
+            "itemtype": "method",
+            "name": "hasNext",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/pagination.js",
+            "line": 73,
+            "itemtype": "method",
+            "name": "isFetching",
+            "return": {
+                "description": "",
+                "type": "Booelan"
+            },
+            "class": "DL.Pagination",
+            "module": "DL"
+        },
+        {
+            "file": "src/system.js",
+            "line": 12,
+            "description": "Return server's system time.",
+            "itemtype": "method",
+            "name": "time",
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "DL.System",
+            "module": "DL"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type",
+            "line": " src/channel/sse.js:91"
+        },
+        {
+            "message": "Missing item type\n-------------\nDependency plugins:\n-------------\n- https://github.com/phonegap-build/PushPlugin\n- https://github.com/apache/cordova-plugin-device\n- https://github.com/danmichaelo/cordova-plugin-appinfo",
+            "line": " src/plugins/cordova/push_notification.js:1"
+        },
+        {
+            "message": "Missing item type\nmethod _registerDevice",
+            "line": " src/plugins/cordova/push_notification.js:212"
+        },
+        {
+            "message": "Missing item type\nChannel implementations",
+            "line": " src/channel.js:1"
+        },
+        {
+            "message": "Missing item type\nFirst or create\nmethod firstorCreate\nparam {Object} data\nparam {Function} callback\nreturn {Promise}\n\nexample Return the first match for 'data' param, or create it.\n\n    client.collection('uniques').firstOrCreate({type: \"something\"}).then(function(data) {\n      console.log(\"Unique row: \", data);\n    });",
+            "line": " src/collection.js:298"
+        },
+        {
+            "message": "Missing item type\nDrop entire collection. This operation is irreversible.",
+            "line": " src/collection.js:457"
+        },
+        {
+            "message": "Missing item type\nmodule DL\nclass DL.CollectionItem\n\nparam {DL.Collection} collection\nparam {Number|String} _id\nconstructor",
+            "line": " src/collection_item.js:1"
+        }
+    ]
+}
