@@ -3,7 +3,7 @@
         "name": "dl-api-javascript",
         "description": "Doubleleft API javascript client.",
         "version": "0.1.0",
-        "url": "https://github.com/doubleleft/dl-api-javascript",
+        "url": "https://github.com/doubleleft/hook-javascript",
         "nocode": "true",
         "themedir": "yuidoc-theme"
     },
