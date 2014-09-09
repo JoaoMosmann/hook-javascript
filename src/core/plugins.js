@@ -4,8 +4,8 @@
  * @constructor
  * @static
  */
-DL.Plugin = {};
-DL.Plugin.Manager = { plugins: [] };
+var Plugin = {};
+Plugin.Manager = { plugins: [] };
 
 /**
  * Register plugin to be instantiated on DL.Client
@@ -13,7 +13,7 @@ DL.Plugin.Manager = { plugins: [] };
  * @param {Object} class
  * @static
  */
-DL.Plugin.Manager.register = function(path, klass) {
+Plugin.Manager.register = function(path, klass) {
   this.plugins.push({ path: path, klass: klass });
 };
 
@@ -23,8 +23,10 @@ DL.Plugin.Manager.register = function(path, klass) {
  * @param {DL.Client} client
  * @static
  */
-DL.Plugin.Manager.setup = function(client) {
+Plugin.Manager.setup = function(client) {
   for (var i=0, l = this.plugins.length; i < l; i++) {
     client[ this.plugins[i].path ] = new this.plugins[i].klass(client);
   }
 };
+
+module.exports = Plugin;

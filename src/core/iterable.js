@@ -3,82 +3,87 @@
  * @module DL
  * @class DL.Iterable
  */
-DL.Iterable = function() { };
-DL.Iterable.prototype = {
-  /**
-   * @method each
-   * @param {Function} func
-   * @return {Promise}
-   */
-  each : function(func) { return this._iterate('each', func); },
+var _ = require('underscore'),
+	when = require('when');
 
-  /**
-   * @method find
-   * @param {Function} func
-   * @return {Promise}
-   */
-  find : function(func) { return this._iterate('find', func); },
+var Iterable = function() { };
+Iterable.prototype = {
+/**
+ * @method each
+ * @param {Function} func
+ * @return {Promise}
+ */
+each : function(func) { return this._iterate('each', func); },
 
-  /**
-   * @method filter
-   * @param {Function} func
-   * @return {Promise}
-   */
-  filter : function(func) { return this._iterate('filter', func); },
+/**
+ * @method find
+ * @param {Function} func
+ * @return {Promise}
+ */
+find : function(func) { return this._iterate('find', func); },
 
-  /**
-   * @method max
-   * @param {Function} func
-   * @return {Promise}
-   */
-  max : function(func) { return this._iterate('max', func); },
+/**
+ * @method filter
+ * @param {Function} func
+ * @return {Promise}
+ */
+filter : function(func) { return this._iterate('filter', func); },
 
-  /**
-   * @method min
-   * @param {Function} func
-   * @return {Promise}
-   */
-  min : function(func) { return this._iterate('min', func); },
+/**
+ * @method max
+ * @param {Function} func
+ * @return {Promise}
+ */
+max : function(func) { return this._iterate('max', func); },
 
-  /**
-   * @method every
-   * @param {Function} func
-   * @return {Promise}
-   */
-  every : function(func, accumulator) { return this._iterate('every', func); },
+/**
+ * @method min
+ * @param {Function} func
+ * @return {Promise}
+ */
+min : function(func) { return this._iterate('min', func); },
 
-  /**
-   * @method reject
-   * @param {Function} func
-   * @return {Promise}
-   */
-  reject : function(func, accumulator) { return this._iterate('reject', func, accumulator); },
+/**
+ * @method every
+ * @param {Function} func
+ * @return {Promise}
+ */
+every : function(func, accumulator) { return this._iterate('every', func); },
 
-  /**
-   * @method groupBy
-   * @param {Function} func
-   * @return {Promise}
-   */
-  groupBy : function(func, accumulator) { return this._iterate('groupBy', func, accumulator); },
+/**
+ * @method reject
+ * @param {Function} func
+ * @return {Promise}
+ */
+reject : function(func, accumulator) { return this._iterate('reject', func, accumulator); },
 
-  /**
-   * Iterate using lodash function
-   * @method _iterate
-   * @param {String} method
-   * @param {Function} func
-   * @param {Object} argument
-   * @return {Promise}
-   */
-  _iterate : function(method, func, arg3) {
-    var that = this, deferred = when.defer();
+/**
+ * @method groupBy
+ * @param {Function} func
+ * @return {Promise}
+ */
+groupBy : function(func, accumulator) { return this._iterate('groupBy', func, accumulator); },
 
-    this.then(function(data) {
-      var result = _[method].call(_, data, func, arg3);
-      deferred.resolver.resolve(result);
-    }).otherwise(function(err) {
-      deferred.resolver.reject(err);
-    });
+/**
+ * Iterate using lodash function
+ * @method _iterate
+ * @param {String} method
+ * @param {Function} func
+ * @param {Object} argument
+ * @return {Promise}
+ */
+_iterate : function(method, func, arg3) {
+  var that = this, deferred = when.defer();
 
-    return deferred.promise;
-  }
+  this.then(function(data) {
+    var result = _[method].call(_, data, func, arg3);
+    deferred.resolver.resolve(result);
+  }).otherwise(function(err) {
+    deferred.resolver.reject(err);
+  });
+
+  return deferred.promise;
+}
 };
+
+module.exports = Iterable;

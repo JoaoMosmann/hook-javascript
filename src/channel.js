@@ -1,7 +1,7 @@
 /**
  * Channel implementations
  */
-DL.Channel = {};
+var Channel = {};
 
 // DL.Channel.Example = function(client, collection, options) {
 // };
@@ -20,3 +20,5 @@ DL.Channel = {};
 
 // DL.Channel.Example.prototype.disconnect = function(sync) {
 // };
+
+module.exports = Channel;

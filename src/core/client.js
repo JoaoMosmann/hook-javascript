@@ -25,11 +25,23 @@
 //
 // IE9<: prevent crash when FormData isn't defined.
 //
+
 if(typeof(window.FormData)==="undefined"){
     window.FormData = function(){ this.append=function(){}; };
 }
 
-DL.Client = function(options) {
+var when = require('when')
+  , uxhr = require('uxhr')
+  , KeyValues = require('../key_values.js')
+  , Auth = require('../auth.js')
+  , Files = require('../files.js')
+  , System = require('../system.js')
+  , Plugin = require('../core/plugins.js')
+  , Collection = require('../collection.js')
+  , Channel = require('../channel.js');
+
+
+var Client = function(options) {
   this.url = options.url || "http://dl-api.dev/api/public/index.php/";
   this.appId = options.appId;
   this.key = options.key;
@@ -43,25 +55,25 @@ DL.Client = function(options) {
   /**
    * @property {DL.KeyValues} keys
    */
-  this.keys = new DL.KeyValues(this);
+  this.keys = new KeyValues(this);
 
   /**
    * @property {DL.Auth} auth
    */
-  this.auth = new DL.Auth(this);
+  this.auth = new Auth(this);
 
   /**
    * @property {DL.Fiels} files
    */
-  this.files = new DL.Files(this);
+  this.files = new Files(this);
 
   /**
    * @property {DL.System} system
    */
-  this.system = new DL.System(this);
+  this.system = new System(this);
 
   // Setup all registered plugins.
-  DL.Plugin.Manager.setup(this);
+  Plugin.Manager.setup(this);
 };
 
 /**
@@ -79,8 +91,8 @@ DL.Client = function(options) {
  *     var highscores = client.collection('highscores');
  *
  */
-DL.Client.prototype.collection = function(collectionName) {
-  return new DL.Collection(this, collectionName);
+Client.prototype.collection = function(collectionName) {
+  return new Collection(this, collectionName);
 };
 
 /**
@@ -99,7 +111,7 @@ DL.Client.prototype.collection = function(collectionName) {
  *     var channel = client.channel('messages', { transport: "websockets" });
  *
  */
-DL.Client.prototype.channel = function(name, options) {
+Client.prototype.channel = function(name, options) {
   if (typeof(options)==="undefined") { options = {}; }
 
   var collection = this.collection(name);
@@ -109,7 +121,7 @@ DL.Client.prototype.channel = function(name, options) {
   if (!options.transport) { options.transport = 'sse'; }
   options.transport = options.transport.toUpperCase();
 
-  return new DL.Channel[options.transport](this, collection, options);
+  return new Channel[options.transport](this, collection, options);
 };
 
 /**
@@ -117,7 +129,7 @@ DL.Client.prototype.channel = function(name, options) {
  * @param {String} segments
  * @param {Object} data
  */
-DL.Client.prototype.post = function(segments, data) {
+Client.prototype.post = function(segments, data) {
   if (typeof(data)==="undefined") {
     data = {};
   }
@@ -129,7 +141,7 @@ DL.Client.prototype.post = function(segments, data) {
  * @param {String} segments
  * @param {Object} data
  */
-DL.Client.prototype.get = function(segments, data) {
+Client.prototype.get = function(segments, data) {
   return this.request(segments, "GET", data);
 };
 
@@ -138,7 +150,7 @@ DL.Client.prototype.get = function(segments, data) {
  * @param {String} segments
  * @param {Object} data
  */
-DL.Client.prototype.put = function(segments, data) {
+Client.prototype.put = function(segments, data) {
   return this.request(segments, "PUT", data);
 };
 
@@ -146,7 +158,7 @@ DL.Client.prototype.put = function(segments, data) {
  * @method delete
  * @param {String} segments
  */
-DL.Client.prototype.remove = function(segments, data) {
+Client.prototype.remove = function(segments, data) {
   return this.request(segments, "DELETE", data);
 };
 
@@ -156,7 +168,7 @@ DL.Client.prototype.remove = function(segments, data) {
  * @param {String} method
  * @param {Object} data
  */
-DL.Client.prototype.request = function(segments, method, data) {
+Client.prototype.request = function(segments, method, data) {
   var payload, request_headers, deferred = when.defer(),
       synchronous = false;
 
@@ -223,7 +235,7 @@ DL.Client.prototype.request = function(segments, method, data) {
  * @method getHeaders
  * @return {Object}
  */
-DL.Client.prototype.getHeaders = function() {
+Client.prototype.getHeaders = function() {
   // App authentication request headers
   var request_headers = {
     'X-App-Id': this.appId,
@@ -245,7 +257,7 @@ DL.Client.prototype.getHeaders = function() {
  * @param {Object} data
  * @return {String|FormData}
  */
-DL.Client.prototype.getPayload = function(method, data) {
+Client.prototype.getPayload = function(method, data) {
   var payload = null;
   if (data) {
 
@@ -318,7 +330,7 @@ DL.Client.prototype.getPayload = function(method, data) {
   return payload;
 }
 
-DL.Client.prototype.serialize = function(obj, prefix) {
+Client.prototype.serialize = function(obj, prefix) {
   var str = [];
   for (var p in obj) {
     if (obj.hasOwnProperty(p)) {
@@ -329,3 +341,5 @@ DL.Client.prototype.serialize = function(obj, prefix) {
   }
   return str.join("&");
 };
+
+module.exports = Client;

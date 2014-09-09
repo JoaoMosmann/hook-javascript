@@ -2,9 +2,12 @@
  * @module DL
  * @class DL.Files
  */
-DL.Files = function(client) {
-  this.client = client;
-};
+
+
+var when = require('when')
+  , Files = function(client) {
+    this.client = client;
+  };
 
 /**
  * @method upload
@@ -13,16 +16,16 @@ DL.Files = function(client) {
  * @param {String} mimeType [optional]
  * @return {Promise}
  */
-DL.Files.prototype.upload = function(data, fileName, mimeType){
+Files.prototype.upload = function(data, fileName, mimeType){
   var formData = new FormData();
   if(data instanceof HTMLCanvasElement && data.toBlob){
-	var deferred = when.defer();
+  var deferred = when.defer();
     var self = this;
     data.toBlob(function(blob){
       self.upload(blob, fileName, mimeType).then(deferred.resolver.resolve, deferred.resolver.reject);
     }, mimeType || "image/png");
 
-	return deferred.promise;
+  return deferred.promise;
   }
 
   try {
@@ -39,7 +42,7 @@ DL.Files.prototype.upload = function(data, fileName, mimeType){
  * @param {Number|String} _id
  * @return {Promise}
  */
-DL.Files.prototype.get = function(_id) {
+Files.prototype.get = function(_id) {
   return this.client.get('files/' + _id);
 };
 
@@ -49,6 +52,8 @@ DL.Files.prototype.get = function(_id) {
  * @param {Number|String} _id
  * @return {Promise}
  */
-DL.Files.prototype.remove = function(_id) {
+Files.prototype.remove = function(_id) {
   return this.client.remove('files/' + _id);
 };
+
+module.exports = Files;

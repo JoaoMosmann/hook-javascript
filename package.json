@@ -16,6 +16,11 @@
 	"bugs": {
 		"url": "https://github.com/doubleleft/dl-api/issues"
 	},
+	"dependencies": {
+		"underscore": "*",
+		"when": "*",
+		"public": "endel/uxhr.git#c19c51fdba09065829b4b50968c92c59f7b34dfe"
+	},
 	"devDependencies": {
 		"grunt": "0.4.1",
 		"grunt-contrib-yuidoc": "*",
@@ -24,6 +29,6 @@
 		"grunt-contrib-jshint": "*",
 		"grunt-contrib-uglify": "*",
 		"grunt-contrib-qunit": "*",
-		"grunt-loader": "0.2.1"
+		"grunt-loader": "0.2.1"		
 	}
 }

@@ -6,7 +6,7 @@
  * @param {Number} perPage
  * @constructor
  */
-DL.Pagination = function(collection) {
+var Pagination = function(collection) {
   this.fetching = true;
 
   /**
@@ -16,7 +16,7 @@ DL.Pagination = function(collection) {
   this.collection = collection;
 };
 
-DL.Pagination.prototype._fetchComplete = function(response) {
+Pagination.prototype._fetchComplete = function(response) {
   this.fetching = false;
 
   /**
@@ -66,7 +66,7 @@ DL.Pagination.prototype._fetchComplete = function(response) {
  * @method hasNext
  * @return {Boolean}
  */
-DL.Pagination.prototype.hasNext = function() {
+Pagination.prototype.hasNext = function() {
   return (this.current_page < this.to);
 };
 
@@ -74,9 +74,11 @@ DL.Pagination.prototype.hasNext = function() {
  * @method isFetching
  * @return {Booelan}
  */
-DL.Pagination.prototype.isFetching = function() {
+Pagination.prototype.isFetching = function() {
   return this.fetching;
 };
 
-DL.Pagination.prototype.then = function() {
+Pagination.prototype.then = function() {
 };
+
+module.exports = Pagination;

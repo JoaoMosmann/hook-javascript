@@ -6,7 +6,10 @@
  * @param {String} name
  * @constructor
  */
-DL.Collection = function(client, name) {
+var Iterable = require('./core/iterable.js');
+var Pagination = require('./pagination.js');
+
+var Collection = function(client, name) {
   this.client = client;
 
   this.name = this._validateName(name);
@@ -16,8 +19,8 @@ DL.Collection = function(client, name) {
 };
 
 // Inherits from DL.Iterable
-DL.Collection.prototype = new DL.Iterable();
-DL.Collection.prototype.constructor = DL.Collection;
+Collection.prototype = new Iterable();
+Collection.prototype.constructor = Collection;
 
 /**
  * Create a new resource
@@ -48,7 +51,7 @@ DL.Collection.prototype.constructor = DL.Collection;
  *     });
  *
  */
-DL.Collection.prototype.create = function(data) {
+Collection.prototype.create = function(data) {
   return this.client.post(this.segments, data);
 };
 
@@ -57,7 +60,7 @@ DL.Collection.prototype.create = function(data) {
  * @method get
  * @return {DL.Collection} this
  */
-DL.Collection.prototype.get = function() {
+Collection.prototype.get = function() {
   return this.client.get(this.segments, this.buildQuery());
 };
 
@@ -100,7 +103,7 @@ DL.Collection.prototype.get = function() {
  *     })
  *
  */
-DL.Collection.prototype.where = function(objects, _operation, _value) {
+Collection.prototype.where = function(objects, _operation, _value) {
   var field,
       operation = (typeof(_value)==="undefined") ? '=' : _operation,
       value = (typeof(_value)==="undefined") ? _operation : _value;
@@ -148,7 +151,7 @@ DL.Collection.prototype.where = function(objects, _operation, _value) {
  *     });
  *
  */
-DL.Collection.prototype.find = function(_id) {
+Collection.prototype.find = function(_id) {
   var promise = this.client.get(this.segments + '/' + _id, this.buildQuery());
   if (arguments.length > 1) {
     return promise.then.apply(promise, Array.prototype.slice.call(arguments,1));
@@ -163,7 +166,7 @@ DL.Collection.prototype.find = function(_id) {
  * @param {String} ... more fields
  * @return {DL.Collection} this
  */
-DL.Collection.prototype.group = function() {
+Collection.prototype.group = function() {
   this._group = arguments;
   return this;
 };
@@ -180,7 +183,7 @@ DL.Collection.prototype.group = function() {
  *       console.log("Total:", total);
  *     });
  */
-DL.Collection.prototype.count = function() {
+Collection.prototype.count = function() {
   this.options.aggregation = {method: 'count', field: null};
   var promise = this.get();
   if (arguments.length > 0) {
@@ -202,7 +205,7 @@ DL.Collection.prototype.count = function() {
  *       console.log("max: ", data);
  *     });
  */
-DL.Collection.prototype.max = function(field) {
+Collection.prototype.max = function(field) {
   this.options.aggregation = {method: 'max', field: field};
   var promise = this.get();
   if (arguments.length > 1) {
@@ -224,7 +227,7 @@ DL.Collection.prototype.max = function(field) {
  *       console.log("min: ", data);
  *     });
  */
-DL.Collection.prototype.min = function(field) {
+Collection.prototype.min = function(field) {
   this.options.aggregation = {method: 'min', field: field};
   var promise = this.get();
   if (arguments.length > 1) {
@@ -246,7 +249,7 @@ DL.Collection.prototype.min = function(field) {
  *       console.log("avg: ", data);
  *     });
  */
-DL.Collection.prototype.avg = function(field) {
+Collection.prototype.avg = function(field) {
   this.options.aggregation = {method: 'avg', field: field};
   var promise = this.get();
   if (arguments.length > 1) {
@@ -268,7 +271,7 @@ DL.Collection.prototype.avg = function(field) {
  *       console.log("sum: ", data);
  *     });
  */
-DL.Collection.prototype.sum = function(field) {
+Collection.prototype.sum = function(field) {
   this.options.aggregation = {method: 'sum', field: field};
   var promise = this.get();
   if (arguments.length > 1) {
@@ -289,7 +292,7 @@ DL.Collection.prototype.sum = function(field) {
  *       console.log("Last created user:", data);
  *     });
  */
-DL.Collection.prototype.first = function() {
+Collection.prototype.first = function() {
   this.options.first = 1;
   var promise = this.get();
   promise.then.apply(promise, arguments);
@@ -309,7 +312,7 @@ DL.Collection.prototype.first = function() {
  *       console.log("Unique row: ", data);
  *     });
  */
-DL.Collection.prototype.firstOrCreate = function(data) {
+Collection.prototype.firstOrCreate = function(data) {
   throw new Error("Not implemented");
   // var promise;
   // this.options.first = 1;
@@ -325,7 +328,7 @@ DL.Collection.prototype.firstOrCreate = function(data) {
  * @method then
  * @return {Promise}
  */
-DL.Collection.prototype.then = function() {
+Collection.prototype.then = function() {
   var promise = this.get();
   promise.then.apply(promise, arguments);
   return promise;
@@ -336,7 +339,7 @@ DL.Collection.prototype.then = function() {
  * @method reset
  * @return {DL.Collection} this
  */
-DL.Collection.prototype.reset = function() {
+Collection.prototype.reset = function() {
   this.options = {};
   this.wheres = [];
   this.ordering = [];
@@ -365,7 +368,7 @@ DL.Collection.prototype.reset = function() {
  *     client.collection('users').sort('created_at', -1).then(function(data) {  });
  *     client.collection('users').sort('created_at', 'desc').then(function(data) {  });
  */
-DL.Collection.prototype.sort = function(field, direction) {
+Collection.prototype.sort = function(field, direction) {
   if (!direction) {
     direction = "asc";
   } else if (typeof(direction)==="number") {
@@ -392,7 +395,7 @@ DL.Collection.prototype.sort = function(field, direction) {
  *       console.log("last 5 rows updated, after 5 lastest: ", data);
  *     });
  */
-DL.Collection.prototype.limit = function(int) {
+Collection.prototype.limit = function(int) {
   this._limit = int;
   return this;
 };
@@ -404,7 +407,7 @@ DL.Collection.prototype.limit = function(int) {
  * @param {Number} int
  * @return {DL.Collection} this
  */
-DL.Collection.prototype.offset = function(int) {
+Collection.prototype.offset = function(int) {
   this._offset = int;
   return this;
 };
@@ -425,7 +428,7 @@ DL.Collection.prototype.offset = function(int) {
  *     client.collection('messages').create({type: 'new-game', text: "yey, streaming will catch me!"});
  *
  */
-DL.Collection.prototype.channel = function(options) {
+Collection.prototype.channel = function(options) {
   throw new Error("Not implemented.");
   // return new DL.Channel(this.client, this, options);
 };
@@ -438,8 +441,8 @@ DL.Collection.prototype.channel = function(options) {
  * @param {Function} onComplete
  * @param {Function} onError (optional)
  */
-DL.Collection.prototype.paginate = function(perPage, onComplete, onError) {
-  var pagination = new DL.Pagination(this);
+Collection.prototype.paginate = function(perPage, onComplete, onError) {
+  var pagination = new Pagination(this);
 
   if (!onComplete) {
     onComplete = perPage;
@@ -459,7 +462,7 @@ DL.Collection.prototype.paginate = function(perPage, onComplete, onError) {
  * Drop entire collection. This operation is irreversible.
  * @return {Promise}
  */
-DL.Collection.prototype.drop = function() {
+Collection.prototype.drop = function() {
   return this.client.remove(this.segments);
 };
 
@@ -481,7 +484,7 @@ DL.Collection.prototype.drop = function() {
  *       console.log("Success:", data.success);
  *     });
  */
-DL.Collection.prototype.remove = function(_id) {
+Collection.prototype.remove = function(_id) {
   var path = this.segments;
   if (typeof(_id)!=="undefined") {
     path += '/' + _id;
@@ -501,7 +504,7 @@ DL.Collection.prototype.remove = function(_id) {
  *       console.log("Success:", data.success);
  *     });
  */
-DL.Collection.prototype.update = function(_id, data) {
+Collection.prototype.update = function(_id, data) {
   return this.client.post(this.segments + '/' + _id, data);
 };
 
@@ -518,7 +521,7 @@ DL.Collection.prototype.update = function(_id, data) {
  *       console.log(numRows, " users has been updated");
  *     });
  */
-DL.Collection.prototype.increment = function(field, value) {
+Collection.prototype.increment = function(field, value) {
   this.options.operation = { method: 'increment', field: field, value: value };
   var promise = this.client.put(this.segments, this.buildQuery());
   if (arguments.length > 0) {
@@ -540,7 +543,7 @@ DL.Collection.prototype.increment = function(field, value) {
  *       console.log(numRows, " users has been updated");
  *     });
  */
-DL.Collection.prototype.decrement = function(field, value) {
+Collection.prototype.decrement = function(field, value) {
   this.options.operation = { method: 'decrement', field: field, value: value };
   var promise = this.client.put(this.segments, this.buildQuery());
   if (arguments.length > 0) {
@@ -567,17 +570,17 @@ DL.Collection.prototype.decrement = function(field, value) {
  *       console.log(numRows, " users has been updated");
  *     });
  */
-DL.Collection.prototype.updateAll = function(data) {
+Collection.prototype.updateAll = function(data) {
   this.options.data = data;
   return this.client.put(this.segments, this.buildQuery());
 };
 
-DL.Collection.prototype.addWhere = function(field, operation, value) {
+Collection.prototype.addWhere = function(field, operation, value) {
   this.wheres.push([field, operation.toLowerCase(), value]);
   return this;
 };
 
-DL.Collection.prototype._validateName = function(name) {
+Collection.prototype._validateName = function(name) {
   var regexp = /^[a-z_\/0-9]+$/;
 
   if (!regexp.test(name)) {
@@ -587,7 +590,7 @@ DL.Collection.prototype._validateName = function(name) {
   return name;
 };
 
-DL.Collection.prototype.buildQuery = function() {
+Collection.prototype.buildQuery = function() {
   var query = {};
 
   // apply limit / offset
@@ -629,3 +632,4 @@ DL.Collection.prototype.buildQuery = function() {
   return query;
 };
 
+module.exports = Collection;

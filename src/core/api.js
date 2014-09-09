@@ -8,4 +8,6 @@ var DL = {
   }
 };
 
+DL.Client = require('./client.js');
+
 window.DL = DL;

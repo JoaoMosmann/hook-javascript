@@ -6,5 +6,6 @@
  * param {Number|String} _id
  * constructor
  */
-DL.CollectionItem = function(collection, _id) {};
+var CollectionItem = function(collection, _id) {};
 
+module.exports = CollectionItem;

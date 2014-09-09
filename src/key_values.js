@@ -5,7 +5,7 @@
  * @param {DL.Client} client
  * @constructor
  */
-DL.KeyValues = function(client) {
+var KeyValues = function(client) {
   this.client = client;
 };
 
@@ -21,7 +21,7 @@ DL.KeyValues = function(client) {
  *       console.log(key.value);
  *     });
  */
-DL.KeyValues.prototype.get = function(key, callback) {
+KeyValues.prototype.get = function(key, callback) {
   var promise = this.client.get('key/' + key);
   if (callback) {
     promise.then.apply(promise, [callback]);
@@ -41,6 +41,8 @@ DL.KeyValues.prototype.get = function(key, callback) {
  *       console.log(key);
  *     });
  */
-DL.KeyValues.prototype.set = function(key, value) {
+KeyValues.prototype.set = function(key, value) {
   return this.client.post('key/' + key, { value: value });
 };
+
+module.exports = KeyValues;
